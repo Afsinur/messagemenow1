@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('header/header.ejs'); %>
+
+  <body>
+    <div id="app">
+      <div id="under_app">
+        <div id="header">
+          <div id="bar_container" @click="active_side(side_Open)">
+            <div class="bar_"></div>
+            <div class="bar_"></div>
+            <div class="bar_"></div>
+            <div class="bar_"></div>
+          </div>
+
+          <h1>message application!</h1>
+
+          <button @click="copyToClipboard">Copy Link</button>
+        </div>
+
+        <div id="under_header">
+          <div id="chatContainer">
+            <div id="msg_Div">
+              <div id="messages"></div>
+
+              <div id="typing"></div>
+            </div>
+
+            <div id="inputDiv">
+              <div>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Name.."
+                  autocomplete="off"
+                  @keyup="vueKeyup1(user_name)"
+                  v-model="user_name"
+                />
+              </div>
+
+              <div>
+                <textarea
+                  id="message"
+                  type="text"
+                  placeholder="Message.."
+                  autocomplete="off"
+                  @keyup="vueKeyup(mess_ages, user_name)"
+                  v-model="mess_ages"
+                >
+                </textarea>
+
+                <button id="send" @click="send_click(user_name, mess_ages)">
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="current_users">
+            <h2>Active Now</h2>
+
+            <ul>
+              <li v-for="(item, index) in showCurrentUsers" :key="index">
+                {{ item.showName }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="side_bar">
+          <div id="header1">
+            <button @click="copyToClipboard">Copy Link</button>
+          </div>
+
+          <div id="current_users1">
+            <h2>Active Now</h2>
+
+            <ul id="current_users1_ul">
+              <li v-for="(item, index) in showCurrentUsers" :key="index">
+                {{ item.showName }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

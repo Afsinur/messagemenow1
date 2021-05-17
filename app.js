@@ -3,6 +3,7 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
+const portNum = process.env.PORT || "1000";
 var userID;
 
 app.set("view engine", "ejs");
@@ -52,6 +53,4 @@ app.get("/:index", (req, res) => {
   res.render("index", { roomId: req.params.index });
 });
 
-server.listen(1000, "localhost", () => {
-  console.log("localhost:1000");
-});
+server.listen(portNum);

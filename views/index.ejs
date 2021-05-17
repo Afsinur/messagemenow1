@@ -57,7 +57,10 @@
           </div>
 
           <div id="current_users">
-            <h2>Active Now</h2>
+            <h2>
+              Active Now
+              <span id="total_active">{{ showCurrentUsers.length }}</span>
+            </h2>
 
             <ul>
               <li v-for="(item, index) in showCurrentUsers" :key="index">
@@ -73,7 +76,10 @@
           </div>
 
           <div id="current_users1">
-            <h2>Active Now</h2>
+            <h2>
+              Active Now
+              <span id="total_active">{{ showCurrentUsers.length }}</span>
+            </h2>
 
             <ul id="current_users1_ul">
               <li v-for="(item, index) in showCurrentUsers" :key="index">

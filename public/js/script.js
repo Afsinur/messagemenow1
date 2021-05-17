@@ -80,6 +80,11 @@ const app = {
         side_bar_javascript.style.transform = "translate(-100%)";
       }
     },
+
+    playSound(url) {
+      const audio = new Audio(url);
+      audio.play();
+    },
   },
 
   mounted() {
@@ -123,7 +128,6 @@ const app = {
         e.target.parentNode != current_users1 &&
         e.target.parentNode != current_users1_ul
       ) {
-        console.log(e.target.parentNode);
         this.side_Open = false;
         side_bar_javascript.style.transform = "translate(-100%)";
       }
@@ -292,6 +296,10 @@ const app = {
           block: "end",
           inline: "nearest",
         });
+      }
+
+      if (document.hidden == true) {
+        this.playSound("sounds/message_beep.mp3");
       }
     });
 

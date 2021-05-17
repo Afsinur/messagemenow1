@@ -53,4 +53,6 @@ app.get("/:index", (req, res) => {
   res.render("index", { roomId: req.params.index });
 });
 
-server.listen(portNum);
+server.listen(portNum, "192.168.1.4", () => {
+  console.log("192.168.1.4:" + portNum);
+});

@@ -13,6 +13,10 @@ h1 {
   color: #303030;
 }
 
+pre {
+  white-space: pre-wrap;
+}
+
 #under_app {
   position: relative;
   padding: 10px;

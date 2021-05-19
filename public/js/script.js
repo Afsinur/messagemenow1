@@ -152,6 +152,12 @@ const app = {
             user_pic_Name: this_user_for_image_Name.value,
           });
         } else {
+          document.getElementById("file").value = "";
+
+          document
+            .querySelector(".image_snd_btn")
+            .classList.remove("image_send_d1");
+
           alert("Please insert a png or jpeg file!");
         }
       },

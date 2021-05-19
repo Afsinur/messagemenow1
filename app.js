@@ -4,7 +4,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
 const portNum = process.env.PORT || "1000";
-const offline = true;
+const offline = false;
 var alter_ip = "192.168.1.3";
 var userID;
 

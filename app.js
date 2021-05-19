@@ -4,6 +4,8 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
 const portNum = process.env.PORT || "1000";
+const offline = true;
+var alter_ip = "192.168.1.3";
 var userID;
 
 app.set("view engine", "ejs");
@@ -42,6 +44,22 @@ io.on("connection", (socket) => {
       userID = socket.conn.id;
       socket.to(roomId).broadcast.emit("leaved", userID);
     });
+
+    //-------------------------------------
+
+    socket.on("image", ({ image, type, u_id, user_pic_Name }) => {
+      // image is an array of bytes
+      Buffer.from(image);
+
+      io.to(roomId).emit("image", {
+        image: image.toString("base64"),
+        type,
+        u_id,
+        user_pic_Name,
+      }); // image should be a buffer
+    });
+
+    //-------------------------------------
   });
 });
 
@@ -53,4 +71,14 @@ app.get("/:index", (req, res) => {
   res.render("index", { roomId: req.params.index });
 });
 
-server.listen(portNum);
+//
+
+if (offline) {
+  server.listen(portNum, alter_ip, () => {
+    console.log(`${alter_ip}:${portNum}`);
+  });
+} else {
+  server.listen(portNum, () => {
+    console.log(`localhost:${portNum}`);
+  });
+}

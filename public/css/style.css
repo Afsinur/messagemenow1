@@ -194,10 +194,15 @@ pre {
   resize: vertical;
   max-height: 20vh;
   min-height: 7vh;
+  transition: all 150ms ease-in-out;
+}
+
+#inputDiv #message:focus {
+  height: 15vh;
 }
 
 #inputDiv button {
-  padding: 15px 40px;
+  width: 20%;
   background: rgba(10, 190, 106, 0.815);
   color: #303030;
   cursor: pointer;
@@ -246,7 +251,7 @@ pre {
   padding: 10px;
   margin: 5px 10px 10px 10px;
   align-self: flex-start;
-  max-width: 90%;
+  max-width: 80%;
 }
 
 #notme_Dv span {
@@ -276,6 +281,70 @@ pre {
   transform: translate(-100%);
 }
 
+/*dyn_img*/
+
+#dyn_img {
+  display: none;
+}
+
+#extra_div_style_for_image {
+  max-width: 50% !important;
+}
+
+/*image_send_d1*/
+
+.image_send_d1 {
+  animation: sending_image 500ms forwards infinite;
+}
+
+/*keyframes*/
+@keyframes sending_image {
+  0% {
+    background: linear-gradient(to right, #00a2ff 0%, #303030 0%);
+    transition: all 150ms ease-in-out;
+  }
+  10% {
+    background: linear-gradient(to right, #00a2ff 10%, #303030 10%);
+    transition: all 150ms ease-in-out;
+  }
+  20% {
+    background: linear-gradient(to right, #00a2ff 20%, #303030 20%);
+    transition: all 150ms ease-in-out;
+  }
+  30% {
+    background: linear-gradient(to right, #00a2ff 30%, #303030 30%);
+    transition: all 150ms ease-in-out;
+  }
+  40% {
+    background: linear-gradient(to right, #00a2ff 40%, #303030 40%);
+    transition: all 150ms ease-in-out;
+  }
+  50% {
+    background: linear-gradient(to right, #00a2ff 50%, #303030 50%);
+    transition: all 150ms ease-in-out;
+  }
+  60% {
+    background: linear-gradient(to right, #00a2ff 60%, #303030 60%);
+    transition: all 150ms ease-in-out;
+  }
+  70% {
+    background: linear-gradient(to right, #00a2ff 70%, #303030 70%);
+    transition: all 150ms ease-in-out;
+  }
+  80% {
+    background: linear-gradient(to right, #00a2ff 80%, #303030 80%);
+    transition: all 150ms ease-in-out;
+  }
+  90% {
+    background: linear-gradient(to right, #00a2ff 90%, #303030 90%);
+    transition: all 150ms ease-in-out;
+  }
+  100% {
+    background: linear-gradient(to right, #00a2ff 100%, #303030 100%);
+    transition: all 150ms ease-in-out;
+  }
+}
+
 /*media*/
 
 @media screen and (max-width: 512px) {
@@ -293,6 +362,14 @@ pre {
 
   #chatContainer {
     width: 100%;
+  }
+
+  #inputDiv #message:focus {
+    height: 20vh;
+  }
+
+  #extra_div_style_for_image {
+    max-width: 70% !important;
   }
 }
 

@@ -5,6 +5,7 @@ var count_userID1 = 0;
 var activeIds = [];
 var active_name_with_id = [];
 var showNames_and_ids = [];
+
 //---------------------------
 
 const app = {
@@ -32,17 +33,20 @@ const app = {
       this.mess_ages = "";
     },
 
-    vueKeyup(e, e1) {
+    vueKeyup(e1) {
+      var e = document.getElementById("message");
       var nameValueBroadcast = e1 || userID1;
 
-      if (e != "") {
+      if (e.value != "") {
         socket.emit("typing", nameValueBroadcast);
       } else {
         socket.emit("typing", null);
       }
     },
 
-    vueKeyup1(e) {
+    vueKeyup1() {
+      var e = document.getElementById("name").value;
+
       var nameValueBroadcast_1 = {
         userName: e,
         userID1,
@@ -85,6 +89,14 @@ const app = {
       const audio = new Audio(url);
       audio.play();
     },
+
+    clicked_on_send_image_vue() {
+      if (document.getElementById("file").value == "") {
+        document.getElementById("file").click();
+      } else {
+        alert("Please wait, image not sent yet!");
+      }
+    },
   },
 
   mounted() {
@@ -101,7 +113,117 @@ const app = {
     var matchDataName = [];
     var _direction = "down";
     var _top = chatContainer.scrollTop;
+    //---------------------------------
 
+    const scroll_and_sound = () => {
+      if (_direction == "down") {
+        typing.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+          inline: "nearest",
+        });
+      }
+
+      if (document.hidden == true) {
+        this.playSound("sounds/message_beep.mp3");
+      }
+    };
+
+    //---------------------------------
+
+    //send pictures
+    document.getElementById("file").addEventListener(
+      "change",
+      function () {
+        document.querySelector(".image_snd_btn").classList.add("image_send_d1");
+
+        var this_user_for_image_Name =
+          document.querySelector("#inputDiv #name");
+
+        if (
+          this.files[0].type == "image/jpeg" ||
+          this.files[0].type == "image/png" ||
+          this.files[0].type == "image/jpg"
+        ) {
+          socket.emit("image", {
+            image: this.files[0],
+            type: this.files[0].type,
+            u_id: userID1,
+            user_pic_Name: this_user_for_image_Name.value,
+          });
+        } else {
+          alert("Please insert a png or jpeg file!");
+        }
+      },
+      false
+    );
+
+    // Client side
+    socket.on("image", ({ image, type, u_id, user_pic_Name }) => {
+      // create image with
+      if (type == "image/jpeg" || type == "image/png" || type == "image/jpg") {
+        const img = new Image();
+
+        // change image type to whatever you use, or detect it in the backend
+        // and send it if you support multiple extensions
+        img.src = `data:image/jpg;base64,${image}`;
+
+        // Insert it into the DOM
+        var imgE1 = document.createElement("img");
+        imgE1.style = "width: 100%;";
+        imgE1.src = img.src;
+
+        var messages_N = document.querySelector("#messages");
+
+        if (u_id == userID1) {
+          var n_div1 = document.createElement("div");
+          n_div1.id = "me_Dv";
+          var n_div2 = document.createElement("div");
+          n_div2.id = "extra_div_style_for_image";
+
+          n_div2.appendChild(imgE1);
+
+          n_div1.appendChild(n_div2);
+
+          messages_N.appendChild(n_div1);
+
+          document.getElementById("file").value = "";
+
+          document
+            .querySelector(".image_snd_btn")
+            .classList.remove("image_send_d1");
+        } else {
+          //<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre></div></div>`;
+          var n_div3 = document.createElement("div");
+          n_div3.id = "notme_Dv";
+          var spn_1 = document.createElement("span");
+          var ckeck_var = user_pic_Name || u_id;
+
+          var txtNode = document.createTextNode(ckeck_var);
+
+          spn_1.appendChild(txtNode);
+
+          n_div3.appendChild(spn_1);
+
+          var n_div4 = document.createElement("div");
+          n_div4.id = "extra_div_style_for_image";
+
+          n_div4.appendChild(imgE1);
+
+          n_div3.appendChild(n_div4);
+
+          messages_N.appendChild(n_div3);
+        }
+
+        setTimeout(() => {
+          scroll_and_sound();
+        }, 100);
+      } else {
+        console.log("Please insert a png or jpeg file!");
+      }
+    });
+
+    //---------------------------------
     //scroll function
     chatContainer.addEventListener("scroll", () => {
       var _cur_top = chatContainer.scrollTop;
@@ -290,17 +412,9 @@ const app = {
       typing.innerHTML = "";
       matchDataName = [];
 
-      if (_direction == "down") {
-        typing.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        });
-      }
-
-      if (document.hidden == true) {
-        this.playSound("sounds/message_beep.mp3");
-      }
+      setTimeout(() => {
+        scroll_and_sound();
+      }, 100);
     });
 
     socket.on("typing", (data) => {

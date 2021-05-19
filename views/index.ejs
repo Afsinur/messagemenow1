@@ -15,7 +15,7 @@
 
           <h1>message application!</h1>
 
-          <button @click="copyToClipboard">Copy Link</button>
+          <button @click="copyToClipboard">Copy URL</button>
         </div>
 
         <div id="under_header">
@@ -33,18 +33,26 @@
                   type="text"
                   placeholder="Name.."
                   autocomplete="off"
-                  @keyup="vueKeyup1(user_name)"
+                  @keyup="vueKeyup1()"
                   v-model="user_name"
                 />
               </div>
 
               <div>
+                <button
+                  id="send"
+                  class="image_snd_btn"
+                  @click="clicked_on_send_image_vue"
+                >
+                  Image
+                </button>
+
                 <textarea
                   id="message"
                   type="text"
                   placeholder="Message.."
                   autocomplete="off"
-                  @keyup="vueKeyup(mess_ages, user_name)"
+                  @keyup="vueKeyup(user_name)"
                   v-model="mess_ages"
                 >
                 </textarea>
@@ -89,6 +97,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div id="dyn_img">
+      <input id="file" type="file" />
     </div>
   </body>
 </html>

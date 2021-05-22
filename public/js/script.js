@@ -143,72 +143,10 @@ const app = {
       this.sending_AN_IMG = data1;
       this.sending_AN_IMG1 = data2;
     });
-    //
-    document.getElementById("file").addEventListener(
-      "change",
-      function () {
-        document.getElementById("fileinput").click();
-        //---------------------------------------
-        /*(async () => {
-          const formData = new FormData();
-          formData.append("sampleFile", this.files[0]);
 
-          const data = await fetch("/sendimage", {
-            method: "POST",
-            body: formData,
-          });
-
-          const jsoned = await data.json();
-          console.log(jsoned);
-        })();
-        //-------------------------------------------
-
-        document.querySelector(".image_snd_btn").classList.add("image_send_d1");
-
-        if (
-          this.files[0].type == "image/jpeg" ||
-          this.files[0].type == "image/png" ||
-          this.files[0].type == "image/jpg"
-        ) {
-          if (this.files[0].size <= 5000000) {
-            socket.emit("clicked_send_img", {
-              data1: true,
-              data2: {
-                mby1: document.querySelector("#inputDiv #name").value,
-                mby2: userID1,
-              },
-            });
-
-            socket.emit("image", {
-              image: this.files[0],
-              type: this.files[0].type,
-              u_id: userID1,
-              user_pic_Name: this_user_for_image_Name.value,
-              fileName: this.files[0].name,
-            });
-
-            readfiles(fileinput.files);
-          } else {
-            document.getElementById("file").value = "";
-
-            document
-              .querySelector(".image_snd_btn")
-              .classList.remove("image_send_d1");
-
-            alert("Maximum file size around 5MB!");
-          }
-        } else {
-          document.getElementById("file").value = "";
-
-          document
-            .querySelector(".image_snd_btn")
-            .classList.remove("image_send_d1");
-
-          alert("Please insert a png or jpeg file!");
-        }*/
-      },
-      false
-    );
+    document.getElementById("file").addEventListener("change", () => {
+      document.getElementById("fileinput").click();
+    });
 
     socket.on("getImage", ({ image, type, u_id, user_pic_Name }) => {
       // create image with
@@ -405,11 +343,6 @@ const app = {
     });
 
     socket.on("leaved", (userID) => {
-      if (this.sending_AN_IMG1.mby2 == userID) {
-        this.sending_AN_IMG = false;
-        this.sending_AN_IMG1 = data2;
-      }
-
       var temp_array_ofDel = [];
       typing.innerHTML = "";
 
@@ -455,6 +388,10 @@ const app = {
           });
         }
       });
+
+      if (this.sending_AN_IMG1.mby2 == userID) {
+        this.sending_AN_IMG = false;
+      }
     });
 
     socket.on("chat", ({ nameValue, messageValue, io_id }) => {

@@ -123,7 +123,6 @@ const app = {
     var matchDataName = [];
     var _direction = "down";
     var _top = chatContainer.scrollTop;
-    //---------------------------------
 
     const scroll_and_sound = () => {
       if (_direction == "down") {
@@ -139,12 +138,7 @@ const app = {
       }
     };
 
-    //---------------------------------
-
-    //--------------------------------
-
     //send pictures
-    //
     socket.on("clicked_send_img", ({ data1, data2 }) => {
       this.sending_AN_IMG = data1;
       this.sending_AN_IMG1 = data2;
@@ -216,11 +210,8 @@ const app = {
       false
     );
 
-    //--------------------------------
     var cnk = "";
     var cnkSent = 0;
-    //--------------------------------
-
     socket.on("getImage", ({ image }) => {
       cnk += image;
       cnkSent++;
@@ -302,78 +293,6 @@ const app = {
       );
     });
 
-    // Client side
-    /*
-     socket.on("image", ({ image, type, u_id, user_pic_Name }) => {
-      // create image with
-      if (type == "image/jpeg" || type == "image/png" || type == "image/jpg") {
-        const img = new Image();
-
-        // change image type to whatever you use, or detect it in the backend
-        // and send it if you support multiple extensions
-        img.src = `data:image/jpg;base64,${window.btoa(image)}`;
-
-        // Insert it into the DOM
-        var imgE1 = document.createElement("img");
-        imgE1.style = "width: 100%;";
-        imgE1.src = img.src;
-
-        var messages_N = document.querySelector("#messages");
-
-        if (u_id == userID1) {
-          socket.emit("clicked_send_img", {
-            data1: false,
-            data2: document.querySelector("#inputDiv #name").value || userID1,
-          });
-
-          var n_div1 = document.createElement("div");
-          n_div1.id = "me_Dv";
-          var n_div2 = document.createElement("div");
-          n_div2.id = "extra_div_style_for_image";
-
-          n_div2.appendChild(imgE1);
-
-          n_div1.appendChild(n_div2);
-
-          messages_N.appendChild(n_div1);
-
-          document.getElementById("file").value = "";
-
-          document
-            .querySelector(".image_snd_btn")
-            .classList.remove("image_send_d1");
-        } else {
-          var n_div3 = document.createElement("div");
-          n_div3.id = "notme_Dv";
-          var spn_1 = document.createElement("span");
-          var ckeck_var = user_pic_Name || u_id;
-
-          var txtNode = document.createTextNode(ckeck_var);
-
-          spn_1.appendChild(txtNode);
-
-          n_div3.appendChild(spn_1);
-
-          var n_div4 = document.createElement("div");
-          n_div4.id = "extra_div_style_for_image";
-
-          n_div4.appendChild(imgE1);
-
-          n_div3.appendChild(n_div4);
-
-          messages_N.appendChild(n_div3);
-        }
-
-        setTimeout(() => {
-          scroll_and_sound();
-        }, 100);
-      } else {
-        console.log("Please insert a png or jpeg file!");
-      }
-     });
-    */
-
-    //---------------------------------
     //scroll function
     chatContainer.addEventListener("scroll", () => {
       var _cur_top = chatContainer.scrollTop;
@@ -404,8 +323,8 @@ const app = {
         side_bar_javascript.style.transform = "translate(-100%)";
       }
     });
+
     //listen for socket
-    //---------------------------------
     socket.emit("join-room", ROOM_ID);
 
     socket.on("user-connected", ({ sockets, userID }) => {
@@ -556,7 +475,7 @@ const app = {
         }
       });
     });
-    //-------------------------------------
+
     socket.on("chat", ({ nameValue, messageValue, io_id }) => {
       if (io_id != userID1) {
         messages.innerHTML += `<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre></div></div>`;
@@ -657,32 +576,7 @@ const app = {
       }
     });
 
-    //
-    var varc = 0,
-      agn = "";
-    socket.on("getAnotherImage", ({ image }) => {
-      varc++;
-      console.log(varc);
-      agn += image;
-      if (varc == 1) {
-        var imgE1 = document.createElement("img");
-        imgE1.style = "width: 100%;";
-        imgE1.src = `${agn}`; //data:image/jpg;base64,
-
-        var messages_N = document.querySelector("#messages");
-        var n_div1 = document.createElement("div");
-        n_div1.id = "me_Dv";
-        var n_div2 = document.createElement("div");
-        n_div2.id = "extra_div_style_for_image";
-
-        n_div2.appendChild(imgE1);
-
-        n_div1.appendChild(n_div2);
-
-        messages_N.appendChild(n_div1);
-      }
-    });
-
+    //send Image
     var fileinput = document.getElementById("fileinput");
 
     var max_width = fileinput.getAttribute("data-maxwidth");
@@ -716,13 +610,6 @@ const app = {
         image.onload = function () {
           // have to wait till it's loaded
           resizeMe(image, file);
-          //var resized = resizeMe(image); // send it to canvas
-
-          //var newinput = document.createElement("img");
-          //newinput.style = "width:100px";
-          //newinput.src = resized; // put result from canvas into new hidden input
-          //newinput
-          //form.appendChild(newinput);
         };
       };
     }
@@ -741,8 +628,6 @@ const app = {
       for (var i = 0; i < files.length; i++) {
         processfile(files[i]); // process each file at once
       }
-      //fileinput.value = ""; //remove the original files from fileinput
-      // TODO remove the previous hidden inputs if user selects other files
     }
 
     // this is where it starts. event triggered when user selects files
@@ -768,14 +653,6 @@ const app = {
               mby2: userID1,
             },
           });
-
-          /*socket.emit("image", {
-              image: this.files[0],
-              type: this.files[0].type,
-              u_id: userID1,
-              user_pic_Name: this_user_for_image_Name.value,
-              fileName: this.files[0].name,
-            });*/
 
           readfiles(fileinput.files);
         } else {
@@ -835,9 +712,6 @@ const app = {
         user_pic_Name: document.querySelector("#inputDiv #name").value,
         fileName: file.name,
       });
-      //preview.appendChild(canvas); // do the actual resized preview
-
-      //return canvas.toDataURL("image/jpeg", 0.7); // get the data from canvas as 70% JPG (can be also PNG, etc.)
     }
   },
 };

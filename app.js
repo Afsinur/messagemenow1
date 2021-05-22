@@ -6,24 +6,15 @@ const { v4: uuidV4 } = require("uuid");
 const fs = require("fs");
 
 const portNum = process.env.PORT || "1000";
-const offline = false;
+const offline = true;
 var alter_ip = "192.168.1.4";
 var userID;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-app.use(express.json());
 
 io.on("connection", (socket) => {
   console.log(socket.handshake.time);
-  //---------------------------------
-  socket.on("new_chunk", (data) => {
-    console.log(data);
-
-    socket.emit("getAnotherImage", {
-      image: data.image.toString("base64"),
-    });
-  });
 
   //---------------------------------
 
@@ -131,26 +122,6 @@ app.get("/", (req, res) => {
 
 app.get("/:index", (req, res) => {
   res.render("index", { roomId: req.params.index });
-});
-
-app.post("/sendimage", (req, res) => {
-  let sampleFile;
-  let uploadPath;
-
-  if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send("No files were uploaded.");
-  }
-
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  sampleFile = req.files.sampleFile;
-  uploadPath = __dirname + "/public/temp_image/" + sampleFile.name;
-
-  // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv(uploadPath, function (err) {
-    if (err) return res.status(500).send(err);
-
-    res.send({ data: "File uploaded!" });
-  });
 });
 
 //

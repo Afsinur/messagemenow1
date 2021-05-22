@@ -80,7 +80,7 @@
 
         <div id="side_bar">
           <div id="header1">
-            <button @click="copyToClipboard">Copy Link</button>
+            <button @click="copyToClipboard">Copy URL</button>
           </div>
 
           <div id="current_users1">
@@ -100,7 +100,34 @@
     </div>
 
     <div id="dyn_img">
-      <input id="file" type="file" />
+      <input id="file" type="file" accept="image/png, image/jpeg , image/jpg" />
     </div>
+
+    <div
+      id="streamed_D"
+      style="position: fixed; top: 0; left: 0; margin: 10px"
+    ></div>
+
+    <div style="display: none">
+      <form
+        id="form"
+        action="submit"
+        method="post"
+        accept-charset="utf-8"
+        enctype="multipart/form-data"
+      >
+        <input
+          id="fileinput"
+          data-maxwidth="620"
+          data-maxheight="620"
+          type="file"
+          name="file"
+        />
+      </form>
+
+      <div id="preview"></div>
+    </div>
+
+    <script src="js/p.js" type="text/javascript" charset="utf-8"></script>
   </body>
 </html>

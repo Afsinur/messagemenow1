@@ -3,16 +3,31 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
+const fileUpload = require("express-fileupload");
+const fs = require("fs");
+
 const portNum = process.env.PORT || "1000";
-const offline = false;
-var alter_ip = "192.168.1.3";
+const offline = true;
+var alter_ip = "192.168.1.4";
 var userID;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(express.json());
+app.use(fileUpload());
 
 io.on("connection", (socket) => {
   console.log(socket.handshake.time);
+  //---------------------------------
+  socket.on("new_chunk", (data) => {
+    console.log(data);
+
+    socket.emit("getAnotherImage", {
+      image: data.image.toString("base64"),
+    });
+  });
+
+  //---------------------------------
 
   socket.on("join-room", (roomId) => {
     socket.join(roomId);
@@ -46,17 +61,66 @@ io.on("connection", (socket) => {
     });
 
     //-------------------------------------
+    socket.on("image", ({ image, type, u_id, user_pic_Name, fileName }) => {
+      console.log(fileName + " recieved!!");
 
-    socket.on("image", ({ image, type, u_id, user_pic_Name }) => {
-      // image is an array of bytes
-      Buffer.from(image);
+      var rendomFileName = `${uuidV4()}${fileName}`;
+      console.log(rendomFileName + " renamed!!");
 
-      io.to(roomId).emit("image", {
-        image: image.toString("base64"),
+      var writeStream = fs.createWriteStream(
+        __dirname + "/public/writes/" + rendomFileName + ".txt"
+      );
+
+      writeStream.write(image, () => {
+        var ReadStream = fs.createReadStream(
+          __dirname + "/public/writes/" + rendomFileName + ".txt"
+        );
+
+        var chunks = [];
+        ReadStream.on("data", (cnk) => {
+          chunks.push(cnk);
+
+          io.to(roomId).emit("getImage", {
+            image: cnk.toString("binary"),
+          });
+        });
+
+        ReadStream.on("end", () => {
+          io.to(roomId).emit("getImage1", {
+            cnkFromServer1: chunks.length,
+            type,
+            u_id,
+            user_pic_Name,
+          });
+          //chunks
+
+          if (
+            fs.existsSync(
+              __dirname + "/public/writes/" + rendomFileName + ".txt"
+            )
+          ) {
+            fs.unlink(
+              __dirname + "/public/writes/" + rendomFileName + ".txt",
+              (err) => {
+                if (err) throw err;
+                console.log(`${rendomFileName}.txt deleted!`);
+              }
+            );
+          }
+        });
+      });
+      //--------------------------------------
+      /*io.to(roomId).emit("image", {
+        image: image.toString("binary"),
         type,
         u_id,
         user_pic_Name,
-      }); // image should be a buffer
+      });*/
+    });
+
+    //clicked_send_img
+    socket.on("clicked_send_img", (data) => {
+      socket.to(roomId).broadcast.emit("clicked_send_img", data);
     });
 
     //-------------------------------------
@@ -69,6 +133,26 @@ app.get("/", (req, res) => {
 
 app.get("/:index", (req, res) => {
   res.render("index", { roomId: req.params.index });
+});
+
+app.post("/sendimage", (req, res) => {
+  let sampleFile;
+  let uploadPath;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send("No files were uploaded.");
+  }
+
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  sampleFile = req.files.sampleFile;
+  uploadPath = __dirname + "/public/temp_image/" + sampleFile.name;
+
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv(uploadPath, function (err) {
+    if (err) return res.status(500).send(err);
+
+    res.send({ data: "File uploaded!" });
+  });
 });
 
 //

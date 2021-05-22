@@ -15,6 +15,8 @@ const app = {
       user_name: "",
       mess_ages: "",
       side_Open: false,
+      sending_AN_IMG: false,
+      sending_AN_IMG1: {},
     };
   },
 
@@ -91,10 +93,18 @@ const app = {
     },
 
     clicked_on_send_image_vue() {
-      if (document.getElementById("file").value == "") {
-        document.getElementById("file").click();
+      if (document.getElementById("fileinput").value == "") {
+        if (this.sending_AN_IMG == false) {
+          document.getElementById("fileinput").click();
+        } else {
+          alert(
+            `Please wait, ${
+              this.sending_AN_IMG1.mby1 || this.sending_AN_IMG1.mby2
+            } is sending an image!`
+          );
+        }
       } else {
-        alert("Please wait, image not sent yet!");
+        alert("Please wait, image has not processed yet!");
       }
     },
   },
@@ -131,26 +141,68 @@ const app = {
 
     //---------------------------------
 
+    //--------------------------------
+
     //send pictures
+    //
+    socket.on("clicked_send_img", ({ data1, data2 }) => {
+      this.sending_AN_IMG = data1;
+      this.sending_AN_IMG1 = data2;
+    });
+    //
     document.getElementById("file").addEventListener(
       "change",
       function () {
-        document.querySelector(".image_snd_btn").classList.add("image_send_d1");
+        document.getElementById("fileinput").click();
+        //---------------------------------------
+        /*(async () => {
+          const formData = new FormData();
+          formData.append("sampleFile", this.files[0]);
 
-        var this_user_for_image_Name =
-          document.querySelector("#inputDiv #name");
+          const data = await fetch("/sendimage", {
+            method: "POST",
+            body: formData,
+          });
+
+          const jsoned = await data.json();
+          console.log(jsoned);
+        })();
+        //-------------------------------------------
+
+        document.querySelector(".image_snd_btn").classList.add("image_send_d1");
 
         if (
           this.files[0].type == "image/jpeg" ||
           this.files[0].type == "image/png" ||
           this.files[0].type == "image/jpg"
         ) {
-          socket.emit("image", {
-            image: this.files[0],
-            type: this.files[0].type,
-            u_id: userID1,
-            user_pic_Name: this_user_for_image_Name.value,
-          });
+          if (this.files[0].size <= 5000000) {
+            socket.emit("clicked_send_img", {
+              data1: true,
+              data2: {
+                mby1: document.querySelector("#inputDiv #name").value,
+                mby2: userID1,
+              },
+            });
+
+            socket.emit("image", {
+              image: this.files[0],
+              type: this.files[0].type,
+              u_id: userID1,
+              user_pic_Name: this_user_for_image_Name.value,
+              fileName: this.files[0].name,
+            });
+
+            readfiles(fileinput.files);
+          } else {
+            document.getElementById("file").value = "";
+
+            document
+              .querySelector(".image_snd_btn")
+              .classList.remove("image_send_d1");
+
+            alert("Maximum file size around 5MB!");
+          }
         } else {
           document.getElementById("file").value = "";
 
@@ -159,20 +211,107 @@ const app = {
             .classList.remove("image_send_d1");
 
           alert("Please insert a png or jpeg file!");
-        }
+        }*/
       },
       false
     );
 
+    //--------------------------------
+    var cnk = "";
+    var cnkSent = 0;
+    //--------------------------------
+
+    socket.on("getImage", ({ image }) => {
+      cnk += image;
+      cnkSent++;
+
+      socket.on(
+        "getImage1",
+        ({ cnkFromServer1, type, u_id, user_pic_Name }) => {
+          if (cnkSent == cnkFromServer1) {
+            // create image with
+            if (
+              type == "image/jpeg" ||
+              type == "image/png" ||
+              type == "image/jpg"
+            ) {
+              var imgE1 = document.createElement("img");
+              imgE1.style = "width: 100%;";
+              imgE1.src = `${cnk}`; //`data:image/jpg;base64,${window.btoa(cnk)}`;
+
+              var messages_N = document.querySelector("#messages");
+
+              if (u_id == userID1) {
+                socket.emit("clicked_send_img", {
+                  data1: false,
+                  data2: {
+                    mby1: document.querySelector("#inputDiv #name").value,
+                    mby2: userID1,
+                  },
+                });
+
+                var n_div1 = document.createElement("div");
+                n_div1.id = "me_Dv";
+                var n_div2 = document.createElement("div");
+                n_div2.id = "extra_div_style_for_image";
+
+                n_div2.appendChild(imgE1);
+
+                n_div1.appendChild(n_div2);
+
+                messages_N.appendChild(n_div1);
+
+                document.getElementById("fileinput").value = "";
+
+                document
+                  .querySelector(".image_snd_btn")
+                  .classList.remove("image_send_d1");
+              } else {
+                var n_div3 = document.createElement("div");
+                n_div3.id = "notme_Dv";
+                var spn_1 = document.createElement("span");
+                var ckeck_var = user_pic_Name || u_id;
+
+                var txtNode = document.createTextNode(ckeck_var);
+
+                spn_1.appendChild(txtNode);
+
+                n_div3.appendChild(spn_1);
+
+                var n_div4 = document.createElement("div");
+                n_div4.id = "extra_div_style_for_image";
+
+                n_div4.appendChild(imgE1);
+
+                n_div3.appendChild(n_div4);
+
+                messages_N.appendChild(n_div3);
+              }
+
+              setTimeout(() => {
+                scroll_and_sound();
+              }, 100);
+            } else {
+              alert("Please insert a png or jpeg file!");
+            }
+
+            cnk = "";
+            cnkSent = 0;
+          }
+        }
+      );
+    });
+
     // Client side
-    socket.on("image", ({ image, type, u_id, user_pic_Name }) => {
+    /*
+     socket.on("image", ({ image, type, u_id, user_pic_Name }) => {
       // create image with
       if (type == "image/jpeg" || type == "image/png" || type == "image/jpg") {
         const img = new Image();
 
         // change image type to whatever you use, or detect it in the backend
         // and send it if you support multiple extensions
-        img.src = `data:image/jpg;base64,${image}`;
+        img.src = `data:image/jpg;base64,${window.btoa(image)}`;
 
         // Insert it into the DOM
         var imgE1 = document.createElement("img");
@@ -182,6 +321,11 @@ const app = {
         var messages_N = document.querySelector("#messages");
 
         if (u_id == userID1) {
+          socket.emit("clicked_send_img", {
+            data1: false,
+            data2: document.querySelector("#inputDiv #name").value || userID1,
+          });
+
           var n_div1 = document.createElement("div");
           n_div1.id = "me_Dv";
           var n_div2 = document.createElement("div");
@@ -199,7 +343,6 @@ const app = {
             .querySelector(".image_snd_btn")
             .classList.remove("image_send_d1");
         } else {
-          //<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre></div></div>`;
           var n_div3 = document.createElement("div");
           n_div3.id = "notme_Dv";
           var spn_1 = document.createElement("span");
@@ -227,7 +370,8 @@ const app = {
       } else {
         console.log("Please insert a png or jpeg file!");
       }
-    });
+     });
+    */
 
     //---------------------------------
     //scroll function
@@ -361,6 +505,11 @@ const app = {
     });
 
     socket.on("leaved", (userID) => {
+      if (this.sending_AN_IMG1.mby2 == userID) {
+        this.sending_AN_IMG = false;
+        this.sending_AN_IMG1 = data2;
+      }
+
       var temp_array_ofDel = [];
       typing.innerHTML = "";
 
@@ -505,6 +654,32 @@ const app = {
         }
       } else {
         data_with_null = data;
+      }
+    });
+
+    //
+    var varc = 0,
+      agn = "";
+    socket.on("getAnotherImage", ({ image }) => {
+      varc++;
+      console.log(varc);
+      agn += image;
+      if (varc == 1) {
+        var imgE1 = document.createElement("img");
+        imgE1.style = "width: 100%;";
+        imgE1.src = `${agn}`; //data:image/jpg;base64,
+
+        var messages_N = document.querySelector("#messages");
+        var n_div1 = document.createElement("div");
+        n_div1.id = "me_Dv";
+        var n_div2 = document.createElement("div");
+        n_div2.id = "extra_div_style_for_image";
+
+        n_div2.appendChild(imgE1);
+
+        n_div1.appendChild(n_div2);
+
+        messages_N.appendChild(n_div1);
       }
     });
   },

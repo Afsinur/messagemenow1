@@ -3,18 +3,16 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
-const fileUpload = require("express-fileupload");
 const fs = require("fs");
 
 const portNum = process.env.PORT || "1000";
-const offline = true;
+const offline = false;
 var alter_ip = "192.168.1.4";
 var userID;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.json());
-app.use(fileUpload());
 
 io.on("connection", (socket) => {
   console.log(socket.handshake.time);

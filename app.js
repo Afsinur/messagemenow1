@@ -3,10 +3,9 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
-const fs = require("fs");
 
 const portNum = process.env.PORT || "1000";
-const offline = true;
+const offline = false;
 var alter_ip = "192.168.1.4";
 var userID;
 
@@ -51,60 +50,12 @@ io.on("connection", (socket) => {
 
     //-------------------------------------
     socket.on("image", ({ image, type, u_id, user_pic_Name, fileName }) => {
-      console.log(fileName + " recieved!!");
-
-      var rendomFileName = `${uuidV4()}${fileName}`;
-      console.log(rendomFileName + " renamed!!");
-
-      var writeStream = fs.createWriteStream(
-        __dirname + "/public/writes/" + rendomFileName + ".txt"
-      );
-
-      writeStream.write(image, () => {
-        var ReadStream = fs.createReadStream(
-          __dirname + "/public/writes/" + rendomFileName + ".txt"
-        );
-
-        var chunks = [];
-        ReadStream.on("data", (cnk) => {
-          chunks.push(cnk);
-
-          io.to(roomId).emit("getImage", {
-            image: cnk.toString("binary"),
-          });
-        });
-
-        ReadStream.on("end", () => {
-          io.to(roomId).emit("getImage1", {
-            cnkFromServer1: chunks.length,
-            type,
-            u_id,
-            user_pic_Name,
-          });
-          //chunks
-
-          if (
-            fs.existsSync(
-              __dirname + "/public/writes/" + rendomFileName + ".txt"
-            )
-          ) {
-            fs.unlink(
-              __dirname + "/public/writes/" + rendomFileName + ".txt",
-              (err) => {
-                if (err) throw err;
-                console.log(`${rendomFileName}.txt deleted!`);
-              }
-            );
-          }
-        });
-      });
-      //--------------------------------------
-      /*io.to(roomId).emit("image", {
+      io.to(roomId).emit("getImage", {
         image: image.toString("binary"),
         type,
         u_id,
         user_pic_Name,
-      });*/
+      });
     });
 
     //clicked_send_img

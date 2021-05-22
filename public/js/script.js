@@ -210,87 +210,68 @@ const app = {
       false
     );
 
-    var cnk = "";
-    var cnkSent = 0;
-    socket.on("getImage", ({ image }) => {
-      cnk += image;
-      cnkSent++;
+    socket.on("getImage", ({ image, type, u_id, user_pic_Name }) => {
+      // create image with
+      if (type == "image/jpeg" || type == "image/png" || type == "image/jpg") {
+        var imgE1 = document.createElement("img");
+        imgE1.style = "width: 100%;";
+        imgE1.src = `${image}`;
 
-      socket.on(
-        "getImage1",
-        ({ cnkFromServer1, type, u_id, user_pic_Name }) => {
-          if (cnkSent == cnkFromServer1) {
-            // create image with
-            if (
-              type == "image/jpeg" ||
-              type == "image/png" ||
-              type == "image/jpg"
-            ) {
-              var imgE1 = document.createElement("img");
-              imgE1.style = "width: 100%;";
-              imgE1.src = `${cnk}`; //`data:image/jpg;base64,${window.btoa(cnk)}`;
+        var messages_N = document.querySelector("#messages");
 
-              var messages_N = document.querySelector("#messages");
+        if (u_id == userID1) {
+          socket.emit("clicked_send_img", {
+            data1: false,
+            data2: {
+              mby1: document.querySelector("#inputDiv #name").value,
+              mby2: userID1,
+            },
+          });
 
-              if (u_id == userID1) {
-                socket.emit("clicked_send_img", {
-                  data1: false,
-                  data2: {
-                    mby1: document.querySelector("#inputDiv #name").value,
-                    mby2: userID1,
-                  },
-                });
+          var n_div1 = document.createElement("div");
+          n_div1.id = "me_Dv";
+          var n_div2 = document.createElement("div");
+          n_div2.id = "extra_div_style_for_image";
 
-                var n_div1 = document.createElement("div");
-                n_div1.id = "me_Dv";
-                var n_div2 = document.createElement("div");
-                n_div2.id = "extra_div_style_for_image";
+          n_div2.appendChild(imgE1);
 
-                n_div2.appendChild(imgE1);
+          n_div1.appendChild(n_div2);
 
-                n_div1.appendChild(n_div2);
+          messages_N.appendChild(n_div1);
 
-                messages_N.appendChild(n_div1);
+          document.getElementById("fileinput").value = "";
 
-                document.getElementById("fileinput").value = "";
+          document
+            .querySelector(".image_snd_btn")
+            .classList.remove("image_send_d1");
+        } else {
+          var n_div3 = document.createElement("div");
+          n_div3.id = "notme_Dv";
+          var spn_1 = document.createElement("span");
+          var ckeck_var = user_pic_Name || u_id;
 
-                document
-                  .querySelector(".image_snd_btn")
-                  .classList.remove("image_send_d1");
-              } else {
-                var n_div3 = document.createElement("div");
-                n_div3.id = "notme_Dv";
-                var spn_1 = document.createElement("span");
-                var ckeck_var = user_pic_Name || u_id;
+          var txtNode = document.createTextNode(ckeck_var);
 
-                var txtNode = document.createTextNode(ckeck_var);
+          spn_1.appendChild(txtNode);
 
-                spn_1.appendChild(txtNode);
+          n_div3.appendChild(spn_1);
 
-                n_div3.appendChild(spn_1);
+          var n_div4 = document.createElement("div");
+          n_div4.id = "extra_div_style_for_image";
 
-                var n_div4 = document.createElement("div");
-                n_div4.id = "extra_div_style_for_image";
+          n_div4.appendChild(imgE1);
 
-                n_div4.appendChild(imgE1);
+          n_div3.appendChild(n_div4);
 
-                n_div3.appendChild(n_div4);
-
-                messages_N.appendChild(n_div3);
-              }
-
-              setTimeout(() => {
-                scroll_and_sound();
-              }, 100);
-            } else {
-              alert("Please insert a png or jpeg file!");
-            }
-
-            cnk = "";
-            cnkSent = 0;
-          }
+          messages_N.appendChild(n_div3);
         }
-      );
+
+        setTimeout(() => {
+          scroll_and_sound();
+        }, 100);
+      } else {
+        alert("Please insert a png or jpeg file!");
+      }
     });
 
     //scroll function

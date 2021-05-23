@@ -344,6 +344,7 @@ pre {
   background-color: rgb(228, 226, 226);
   transition: background-color 150ms ease-in-out;
   cursor: pointer;
+  user-select: none;
 }
 
 #btnStartDiv div #btnStart:hover {

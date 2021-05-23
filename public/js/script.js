@@ -17,6 +17,8 @@ const app = {
       side_Open: false,
       sending_AN_IMG: false,
       sending_AN_IMG1: {},
+      sending_AN_AUDIO: false,
+      sending_AN_AUDIO1: {},
     };
   },
 
@@ -123,6 +125,7 @@ const app = {
     var matchDataName = [];
     var _direction = "down";
     var _top = chatContainer.scrollTop;
+    var local_sending_AN_AUDIO = false;
 
     const scroll_and_sound = () => {
       if (_direction == "down") {
@@ -142,6 +145,14 @@ const app = {
     socket.on("clicked_send_img", ({ data1, data2 }) => {
       this.sending_AN_IMG = data1;
       this.sending_AN_IMG1 = data2;
+    });
+
+    //send audio
+    socket.on("clicked_send_audio", ({ data1, data2 }) => {
+      this.sending_AN_AUDIO = data1;
+      this.sending_AN_AUDIO1 = data2;
+
+      local_sending_AN_AUDIO = this.sending_AN_AUDIO;
     });
 
     document.getElementById("file").addEventListener("change", () => {
@@ -226,10 +237,12 @@ const app = {
 
     //click to close
     window.addEventListener("mouseup", (e) => {
-      var side_bar_javascript = document.getElementById("side_bar");
-      var header1 = document.getElementById("header1");
-      var current_users1 = document.getElementById("current_users1");
-      var current_users1_ul = document.getElementById("current_users1_ul");
+      var side_bar_javascript = document.getElementById("side_bar"),
+        header1 = document.getElementById("header1"),
+        current_users1 = document.getElementById("current_users1"),
+        current_users1_ul = document.getElementById("current_users1_ul"),
+        btnStartDiv = document.getElementById("btnStartDiv"),
+        btnStartContainerDiv = document.getElementById("btnStartContainerDiv");
 
       if (
         e.target != side_bar_javascript &&
@@ -240,6 +253,14 @@ const app = {
       ) {
         this.side_Open = false;
         side_bar_javascript.style.transform = "translate(-100%)";
+      }
+
+      if (
+        e.target != btnStartDiv &&
+        e.target != btnStartContainerDiv &&
+        e.target.parentNode != btnStartContainerDiv
+      ) {
+        btnStartDiv.style.display = "none";
       }
     });
 
@@ -389,8 +410,14 @@ const app = {
         }
       });
 
+      //image
       if (this.sending_AN_IMG1.mby2 == userID) {
         this.sending_AN_IMG = false;
+      }
+
+      //audio
+      if (this.sending_AN_AUDIO1.mby2 == userID) {
+        this.sending_AN_AUDIO = false;
       }
     });
 
@@ -631,6 +658,225 @@ const app = {
         fileName: file.name,
       });
     }
+
+    //==== Audio section ====
+
+    var audioIN = { audio: true };
+    var ProcessStarted = false;
+    var startVoiceRcord = false;
+
+    document.getElementById("btnStartUp").addEventListener("click", () => {
+      if (this.sending_AN_AUDIO == false) {
+        document.getElementById("btnStartDiv").style.display = "flex";
+
+        if (!ProcessStarted) {
+          ProcessStarted = true;
+
+          navigator.mediaDevices
+            .getUserMedia(audioIN)
+
+            // 'then()' method returns a Promise
+            .then(function (mediaStreamObj) {
+              // Connect the media stream to the
+
+              // Start record
+              let start = document.getElementById("btnStart");
+
+              // Stop record
+              let stop = document.getElementById("btnStop");
+
+              let mediaRecorder = new MediaRecorder(mediaStreamObj);
+
+              // Start event
+              var startInerInnerhtml;
+              var dynamicObject2 = {
+                background: "none",
+                padding: `0px`,
+              };
+
+              var multipleStartEvents = () => {
+                if (local_sending_AN_AUDIO == false) {
+                  if (!startVoiceRcord) {
+                    var innerHtmlTIMER = 0;
+                    startVoiceRcord = true;
+
+                    mediaRecorder.start();
+
+                    startInerInnerhtml = setInterval(() => {
+                      innerHtmlTIMER++;
+
+                      var dynamicObject1 = {
+                        background: "#f00",
+                        padding: `${innerHtmlTIMER * 10}px`,
+                      };
+
+                      Object.assign(
+                        document.getElementById("btnStartContainerDiv").style,
+                        dynamicObject1
+                      );
+                    }, 1000);
+                  }
+
+                  setTimeout(() => {
+                    if (startVoiceRcord) {
+                      startVoiceRcord = false;
+
+                      stop.click();
+
+                      clearInterval(startInerInnerhtml);
+
+                      Object.assign(
+                        document.getElementById("btnStartContainerDiv").style,
+                        dynamicObject2
+                      );
+                    }
+                  }, 11000);
+                } else {
+                  alert("Please wait a voice message is in process..");
+                }
+              };
+
+              start.addEventListener("mousedown", multipleStartEvents);
+              start.addEventListener("touchstart", multipleStartEvents);
+
+              var multipleEndEventsFunction = () => {
+                if (startVoiceRcord) {
+                  startVoiceRcord = false;
+
+                  stop.click();
+
+                  clearInterval(startInerInnerhtml);
+
+                  Object.assign(
+                    document.getElementById("btnStartContainerDiv").style,
+                    dynamicObject2
+                  );
+                }
+              };
+
+              start.addEventListener("mouseup", multipleEndEventsFunction);
+              start.addEventListener("touchend", multipleEndEventsFunction);
+              start.addEventListener("touchcancel", multipleEndEventsFunction);
+
+              // Stop event
+              stop.addEventListener("click", function () {
+                mediaRecorder.stop();
+              });
+
+              mediaRecorder.ondataavailable = function (ev) {
+                if (ev.data.size != 0 && ev.data.size >= 1000) {
+                  dataArray.push(ev.data);
+                }
+              };
+
+              let dataArray = [];
+              mediaRecorder.onstop = function () {
+                if (dataArray != "") {
+                  local_sending_AN_AUDIO = true;
+
+                  socket.emit("clicked_send_audio", {
+                    data1: true,
+                    data2: {
+                      mby1: document.querySelector("#inputDiv #name").value,
+                      mby2: userID1,
+                    },
+                  });
+
+                  document
+                    .querySelector("#btnStartUp")
+                    .classList.add("image_send_d1");
+
+                  socket.emit("send_audio", {
+                    dataArray,
+                    u_id: userID1,
+                    user_pic_Name:
+                      document.querySelector("#inputDiv #name").value,
+                  });
+
+                  dataArray = [];
+                }
+              };
+            })
+            .catch(function (err) {
+              console.log(err.name, err.message);
+            });
+        }
+      } else {
+        alert("Please wait a voice message is in process..");
+      }
+    });
+
+    socket.on("send_audio", ({ dataArray, u_id, user_pic_Name }) => {
+      var blob1 = new Blob(dataArray, { type: "audio/mp3;" });
+
+      window.URL = window.URL || window.webkitURL;
+      var blobURL1 = window.URL.createObjectURL(blob1);
+
+      var audio = document.createElement("audio");
+      audio.src = blobURL1;
+      audio.style = "max-width:100%";
+      audio.controls = "controls";
+
+      //document.body.appendChild(audio);
+
+      //---------------------------------
+      var messages_N = document.querySelector("#messages");
+
+      if (u_id == userID1) {
+        //clicked_send_audio
+        setTimeout(() => {
+          this.sending_AN_AUDIO = false;
+          local_sending_AN_AUDIO = false;
+
+          socket.emit("clicked_send_audio", {
+            data1: false,
+            data2: {
+              mby1: document.querySelector("#inputDiv #name").value,
+              mby2: userID1,
+            },
+          });
+
+          document
+            .querySelector("#btnStartUp")
+            .classList.remove("image_send_d1");
+        }, 10000);
+
+        var n_div1 = document.createElement("div");
+        n_div1.id = "me_Dv";
+        var n_div2 = document.createElement("div");
+        n_div2.id = "extra_div_style_for_image1";
+
+        n_div2.appendChild(audio);
+
+        n_div1.appendChild(n_div2);
+
+        messages_N.appendChild(n_div1);
+      } else {
+        var n_div3 = document.createElement("div");
+        n_div3.id = "notme_Dv";
+        var spn_1 = document.createElement("span");
+        var ckeck_var = user_pic_Name || u_id;
+
+        var txtNode = document.createTextNode(ckeck_var);
+
+        spn_1.appendChild(txtNode);
+
+        n_div3.appendChild(spn_1);
+
+        var n_div4 = document.createElement("div");
+        n_div4.id = "extra_div_style_for_image1";
+
+        n_div4.appendChild(audio);
+
+        n_div3.appendChild(n_div4);
+
+        messages_N.appendChild(n_div3);
+      }
+
+      setTimeout(() => {
+        scroll_and_sound();
+      }, 100);
+    });
   },
 };
 

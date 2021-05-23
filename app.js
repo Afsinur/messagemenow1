@@ -6,7 +6,7 @@ const { v4: uuidV4 } = require("uuid");
 
 const portNum = process.env.PORT || "1000";
 const offline = false;
-var alter_ip = "192.168.1.4";
+var alter_ip = "localhost"; //192.168.1.4
 var userID;
 
 app.set("view engine", "ejs");
@@ -14,6 +14,8 @@ app.use(express.static("public"));
 
 io.on("connection", (socket) => {
   console.log(socket.handshake.time);
+
+  //---------------------------------
 
   //---------------------------------
 
@@ -29,6 +31,10 @@ io.on("connection", (socket) => {
 
     socket.on("get_userNames", (data) => {
       io.to(roomId).emit("get_userNames", data);
+    });
+
+    socket.on("send_audio", (data) => {
+      io.to(roomId).emit("send_audio", data);
     });
 
     socket.on("chat", (data) => {
@@ -61,6 +67,11 @@ io.on("connection", (socket) => {
     //clicked_send_img
     socket.on("clicked_send_img", (data) => {
       socket.to(roomId).broadcast.emit("clicked_send_img", data);
+    });
+
+    //clicked_send_audio
+    socket.on("clicked_send_audio", (data) => {
+      socket.to(roomId).broadcast.emit("clicked_send_audio", data);
     });
 
     //-------------------------------------

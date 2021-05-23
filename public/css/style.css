@@ -234,6 +234,9 @@ pre {
   padding: 10px;
   margin: 10px;
   max-width: 80%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #notme_Dv {
@@ -252,6 +255,9 @@ pre {
   margin: 5px 10px 10px 10px;
   align-self: flex-start;
   max-width: 80%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 #notme_Dv span {
@@ -289,12 +295,59 @@ pre {
 
 #extra_div_style_for_image {
   max-width: 50% !important;
+  padding: 5px !important;
+}
+
+#extra_div_style_for_image1 {
+  max-width: 80% !important;
+  padding: 5px !important;
 }
 
 /*image_send_d1*/
 
 .image_send_d1 {
   animation: sending_image 500ms forwards infinite;
+}
+
+/*record*/
+
+#btnStartUp {
+  position: relative;
+}
+
+#btnStartDiv {
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.363);
+  height: 280px;
+  width: 280px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+}
+
+#btnStartDiv div {
+  transition: all 150ms ease-in-out;
+}
+
+#btnStartDiv div #btnStart {
+  border: none;
+  height: 80px;
+  width: 80px;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 50%;
+  background-color: rgb(228, 226, 226);
+  transition: background-color 150ms ease-in-out;
+  cursor: pointer;
+}
+
+#btnStartDiv div #btnStart:hover {
+  background-color: #fff;
 }
 
 /*keyframes*/
@@ -370,6 +423,7 @@ pre {
 
   #extra_div_style_for_image {
     max-width: 70% !important;
+    padding: 5px !important;
   }
 }
 

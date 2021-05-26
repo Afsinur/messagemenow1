@@ -97,9 +97,9 @@ pre {
 #msg_Div {
   position: relative;
   padding: 5px;
-  height: 75vh;
+  height: 74vh;
   overflow-x: hidden;
-  background: rgba(41, 96, 249, 0.25);
+  background: #a4a6e8; /* #2960f940;  rgba(41, 96, 249, 0.25);*/
   display: flex;
   flex-direction: column;
 }
@@ -181,8 +181,6 @@ pre {
 }
 
 #me_Dv div {
-  background: rgb(41, 96, 249);
-  color: #ffffff;
   border-radius: 5px;
   font-size: 18px;
   font-weight: 500;
@@ -202,8 +200,6 @@ pre {
 }
 
 #notme_Dv div {
-  background: rgb(255, 255, 255);
-  color: #303030;
   border-radius: 5px;
   font-size: 18px;
   font-weight: 500;
@@ -218,13 +214,7 @@ pre {
 
 #notme_Dv span {
   font-weight: 500;
-  color: #444444;
   align-self: flex-start;
-}
-
-#tp_ing {
-  font-weight: 500;
-  color: #626262;
 }
 
 /*side_bar*/
@@ -363,13 +353,13 @@ pre {
   transition: transform 150ms ease-in-out;
 }
 
-#tab_content_container div:nth-child(1) {
+#tab_content_container > div:nth-child(1) {
   transform: translate(0%);
 }
-#tab_content_container div:nth-child(2) {
+#tab_content_container > div:nth-child(2) {
   transform: translate(100%);
 }
-#tab_content_container div:nth-child(3) {
+#tab_content_container > div:nth-child(3) {
   transform: translate(200%);
 }
 
@@ -407,13 +397,13 @@ pre {
 
 #tab_content_container div :is(h3) {
   color: #454545;
-  margin-top: 2px;
+  margin: 10px 0px;
   font-weight: 500;
 }
 
 #activeulList {
   overflow-x: hidden;
-  height: 64%;
+  height: 53%;
   margin-top: 10px;
 }
 
@@ -466,6 +456,45 @@ input.checkbox1 {
   background: #666666;
   border-radius: 50% !important;
   transition: background 150ms ease-in-out;
+}
+
+.color_ul li {
+  color: #444444;
+  font-weight: 500;
+}
+
+.resetColorBtn {
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  margin: 4px;
+  background: rgba(0, 68, 255, 0.815);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px rgb(0, 0, 0, 0.25);
+  transition: background 150ms ease-in-out;
+}
+
+.resetColorBtn:hover {
+  background: rgba(0, 44, 167, 0.815);
+}
+
+input[type="color"] {
+  cursor: pointer;
+}
+
+.info_ul {
+  height: 56vh;
+  overflow-x: hidden;
+}
+
+.info_ul li {
+  color: #505050;
+  font-weight: 500;
+  width: 95%;
+  word-break: break-word;
 }
 
 /*keyframes*/

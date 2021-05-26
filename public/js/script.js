@@ -47,6 +47,20 @@ const app = {
       currentVoiceSendAnimation: null,
       show_date: false,
       show_date_p: false,
+      defaultColors: {
+        text: "#ffffff",
+        background: "#2960f9",
+        text1: "#303030",
+        background1: "#ffffff",
+        chatbox: "#a4a6e8",
+      },
+      defaultColors_edited: {
+        text: "#ffffff",
+        background: "#2960f9",
+        text1: "#303030",
+        background1: "#ffffff",
+        chatbox: "#a4a6e8",
+      },
     };
   },
 
@@ -321,6 +335,112 @@ const app = {
         ).style.background = "#666666";
       }
     },
+
+    color_ul_changed_function(e, e1) {
+      //chatbox background
+      if (
+        document.querySelector(`#messages`).parentNode.id == "msg_Div" &&
+        e1 == 5
+      ) {
+        this.defaultColors_edited.chatbox = e.target.value;
+
+        document.querySelector(`#messages`).parentNode.style.background =
+          e.target.value;
+      }
+
+      if (e1 == 1) {
+        this.defaultColors_edited.text = e.target.value;
+      } else if (e1 == 2) {
+        this.defaultColors_edited.background = e.target.value;
+      } else if (e1 == 3) {
+        this.defaultColors_edited.text1 = e.target.value;
+
+        if (document.getElementById("tp_ing") != null) {
+          document.getElementById("tp_ing").style.color = e.target.value;
+        }
+      } else if (e1 == 4) {
+        this.defaultColors_edited.background1 = e.target.value;
+      }
+
+      //chats color and background
+      for (
+        let index = 0;
+        index < document.querySelector(`#messages`).children.length;
+        index++
+      ) {
+        const element1 = document.querySelector(`#messages`).children[index];
+
+        for (let index = 0; index < element1.children.length; index++) {
+          const element2 = element1.children[index];
+
+          //element2.children.length != 0
+          if (element2.parentNode.id == "me_Dv" && e1 == 1) {
+            element2.style.color = e.target.value;
+          } else if (element2.parentNode.id == "me_Dv" && e1 == 2) {
+            element2.style.background = e.target.value;
+          } else if (element2.parentNode.id == "notme_Dv" && e1 == 3) {
+            element2.style.color = e.target.value;
+          } else if (
+            element2.parentNode.id == "notme_Dv" &&
+            e1 == 4 &&
+            element2.children.length != 0
+          ) {
+            element2.style.background = e.target.value;
+          }
+        }
+      }
+    },
+
+    setDefaultColor() {
+      var newResetClone1 = {
+        text: "#ffffff",
+        background: "#2960f9",
+        text1: "#303030",
+        background1: "#ffffff",
+        chatbox: "#a4a6e8",
+      };
+
+      this.defaultColors_edited = newResetClone1;
+
+      document.querySelector(`#messages`).parentNode.style.background =
+        this.defaultColors_edited.chatbox;
+
+      (() => {
+        var new_loop_arr = [1, 2, 3, 4];
+        new_loop_arr.forEach((e1) => {
+          //chats color and background
+          for (
+            let index = 0;
+            index < document.querySelector(`#messages`).children.length;
+            index++
+          ) {
+            const element1 =
+              document.querySelector(`#messages`).children[index];
+
+            for (let index = 0; index < element1.children.length; index++) {
+              const element2 = element1.children[index];
+
+              //element2.children.length != 0
+              if (element2.parentNode.id == "me_Dv" && e1 == 1) {
+                element2.style.color = this.defaultColors_edited.text;
+              } else if (element2.parentNode.id == "me_Dv" && e1 == 2) {
+                element2.style.background =
+                  this.defaultColors_edited.background;
+              } else if (element2.parentNode.id == "notme_Dv" && e1 == 3) {
+                element2.style.color = this.defaultColors_edited.text1;
+              } else if (
+                element2.parentNode.id == "notme_Dv" &&
+                e1 == 4 &&
+                element2.children.length != 0
+              ) {
+                element2.style.background =
+                  this.defaultColors_edited.background1;
+              }
+            }
+          }
+        });
+      })();
+    },
   },
 
   mounted() {
@@ -483,6 +603,7 @@ const app = {
           n_div1.id = "me_Dv";
           var n_div2 = document.createElement("div");
           n_div2.id = "extra_div_style_for_image";
+          n_div2.style = `background:${this.defaultColors_edited.background}`;
 
           n_div2.appendChild(imgE1);
           n_div2.appendChild(n_div2_pEl);
@@ -510,11 +631,13 @@ const app = {
           var txtNode = document.createTextNode(ckeck_var);
 
           spn_1.appendChild(txtNode);
+          spn_1.style = `color:${this.defaultColors_edited.text1}`;
 
           n_div3.appendChild(spn_1);
 
           var n_div4 = document.createElement("div");
           n_div4.id = "extra_div_style_for_image";
+          n_div4.style = `background:${this.defaultColors_edited.background1}`;
 
           n_div4.appendChild(imgE1);
           n_div4.appendChild(n_div2_pEl);
@@ -748,15 +871,35 @@ const app = {
     socket.on("chat", ({ nameValue, messageValue, io_id }) => {
       if (this.show_date == false) {
         if (io_id != userID1) {
-          messages.innerHTML += `<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
+          messages.innerHTML += `<div id="notme_Dv"><span style="color:${
+            this.defaultColors_edited.text1
+          }">${nameValue}</span> <div style="color:${
+            this.defaultColors_edited.text1
+          };background:${
+            this.defaultColors_edited.background1
+          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
         } else {
-          messages.innerHTML += `<div id="me_Dv"><div><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
+          messages.innerHTML += `<div id="me_Dv"><div style="color:${
+            this.defaultColors_edited.text
+          };background:${
+            this.defaultColors_edited.background
+          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
         }
       } else {
         if (io_id != userID1) {
-          messages.innerHTML += `<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
+          messages.innerHTML += `<div id="notme_Dv"><span style="color:${
+            this.defaultColors_edited.text1
+          }">${nameValue}</span> <div style="color:${
+            this.defaultColors_edited.text1
+          };background:${
+            this.defaultColors_edited.background1
+          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
         } else {
-          messages.innerHTML += `<div id="me_Dv"><div><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
+          messages.innerHTML += `<div id="me_Dv"><div style="color:${
+            this.defaultColors_edited.text
+          };background:${
+            this.defaultColors_edited.background
+          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
         }
       }
 
@@ -771,11 +914,11 @@ const app = {
     socket.on("typing", (data) => {
       if (data != null) {
         if (matchDataName.length == 0) {
-          typing.innerHTML = `<p id="tp_ing"><em>${data}</em> is tpying a message..</p>`;
+          typing.innerHTML = `<p id="tp_ing" style="font-weight:500;color:${this.defaultColors_edited.text1}"><em>${data}</em> is tpying a message..</p>`;
           matchDataName.push(data);
         } else {
           if (!matchDataName.includes(data)) {
-            typing.innerHTML += `<p id="tp_ing"><em>${data}</em> is tpying a message..</p>`;
+            typing.innerHTML += `<p id="tp_ing" style="font-weight:500;color:${this.defaultColors_edited.text1}"><em>${data}</em> is tpying a message..</p>`;
             matchDataName.push(data);
           }
         }
@@ -1249,6 +1392,7 @@ const app = {
         n_div1.id = "me_Dv";
         var n_div2 = document.createElement("div");
         n_div2.id = "extra_div_style_for_image1";
+        n_div2.style = `background:${this.defaultColors_edited.background}`;
 
         n_div2.appendChild(audio);
         n_div2.appendChild(n_div2_pEl);
@@ -1264,11 +1408,13 @@ const app = {
         var txtNode = document.createTextNode(ckeck_var);
 
         spn_1.appendChild(txtNode);
+        spn_1.style = `color:${this.defaultColors_edited.text1}`;
 
         n_div3.appendChild(spn_1);
 
         var n_div4 = document.createElement("div");
         n_div4.id = "extra_div_style_for_image1";
+        n_div4.style = `background:${this.defaultColors_edited.background1}`;
 
         n_div4.appendChild(audio);
         n_div4.appendChild(n_div2_pEl);

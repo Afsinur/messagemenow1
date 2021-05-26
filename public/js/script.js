@@ -89,7 +89,9 @@ const app = {
     },
 
     vueKeyup1() {
-      var e = document.getElementById("name").value;
+      var e =
+        document.getElementById("name").value ||
+        document.getElementById("name1").value;
 
       var nameValueBroadcast_1 = {
         userName: e,

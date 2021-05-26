@@ -97,7 +97,7 @@ pre {
 #msg_Div {
   position: relative;
   padding: 5px;
-  height: 77vh;
+  height: 75vh;
   overflow-x: hidden;
   background: rgba(41, 96, 249, 0.25);
   display: flex;

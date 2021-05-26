@@ -5,6 +5,21 @@ var count_userID1 = 0;
 var activeIds = [];
 var active_name_with_id = [];
 var showNames_and_ids = [];
+var var_hideHTML_1st_one = null;
+var var_activatedLi = null;
+var window_innerWidth = window.innerWidth;
+
+//-----------------------------
+
+var resizeIfRisized = () => {
+  if (window.innerWidth <= 512) {
+    var_hideHTML_1st_one = true;
+  } else {
+    var_hideHTML_1st_one = false;
+  }
+};
+
+resizeIfRisized();
 
 //---------------------------
 
@@ -19,11 +34,26 @@ const app = {
       sending_AN_IMG1: {},
       sending_AN_AUDIO: false,
       sending_AN_AUDIO1: {},
+      activatedLi: null,
+      common_li_color_and_background: {
+        common_li_color: "#747474",
+        common_li_color1: "#ffffff",
+        common_li_background: "rgb(174, 57, 239)",
+        common_li_box_Shadow: "inset 0 1px 1px 1px rgba(0, 0, 0, 0.25)",
+        common_li_box_Shadow1: "inset 0 0 0 0 rgba(0, 0, 0, 0.25)",
+      },
+      hideHTML_1st_one: null,
+      sliderTab: null,
+      currentVoiceSendAnimation: null,
+      show_date: false,
+      show_date_p: false,
     };
   },
 
   methods: {
     send_click(e, e1) {
+      document.getElementById("message").style.minHeight = "7vh";
+
       var io_id = userID1;
       var nameValue = e || io_id,
         messageValue = e1;
@@ -38,6 +68,16 @@ const app = {
     },
 
     vueKeyup(e1) {
+      var client_width_divide_value_length_of_text_area =
+        document.getElementById("message").clientWidth /
+        document.getElementById("message").value.length;
+
+      if (client_width_divide_value_length_of_text_area < 4) {
+        document.getElementById("message").style.minHeight = "20vh";
+      } else if (document.getElementById("message").value.length == 0) {
+        document.getElementById("message").style.minHeight = "7vh";
+      }
+
       var e = document.getElementById("message");
       var nameValueBroadcast = e1 || userID1;
 
@@ -109,6 +149,176 @@ const app = {
         alert("Please wait, image has not processed yet!");
       }
     },
+
+    tab_slider(e, e1) {
+      for (
+        let index = 0;
+        index < e.target.parentNode.children.length;
+        index++
+      ) {
+        const element = e.target.parentNode.children[index];
+        if (element != e.target) {
+          element.style.color =
+            this.common_li_color_and_background.common_li_color;
+          element.style.background = "none";
+          element.style.boxShadow =
+            this.common_li_color_and_background.common_li_box_Shadow;
+        } else {
+          this.activatedLi = e.target;
+
+          element.style.color =
+            this.common_li_color_and_background.common_li_color1;
+          element.style.background =
+            this.common_li_color_and_background.common_li_background;
+          element.style.boxShadow =
+            this.common_li_color_and_background.common_li_box_Shadow1;
+        }
+      }
+
+      if (var_hideHTML_1st_one == true) {
+        var dynamicDivs1 = document.querySelector(
+          `#current_users1 #tab_content_container`
+        );
+      } else {
+        var dynamicDivs1 = document.querySelector(`#tab_content_container`);
+      }
+
+      //dynamicDivs1
+      for (let index = 0; index < dynamicDivs1.children.length; index++) {
+        const element = dynamicDivs1.children[index];
+
+        if (element == dynamicDivs1.children[e1]) {
+          if (e1 != 0 && e1 != 2) {
+            if (element.previousSibling != null) {
+              element.previousSibling.style.transform = "translate(-100%)";
+            }
+
+            element.style.transform = "translate(0%)";
+
+            if (element.nextSibling != null) {
+              element.nextSibling.style.transform = "translate(100%)";
+            }
+          } else {
+            if (e1 == 0) {
+              element.style.transform = "translate(0%)";
+
+              element.nextSibling.style.transform = "translate(100%)";
+
+              element.nextSibling.nextSibling.style.transform =
+                "translate(200%)";
+            } else {
+              element.style.transform = "translate(0%)";
+
+              element.previousSibling.style.transform = "translate(-100%)";
+
+              element.previousSibling.previousSibling.style.transform =
+                "translate(-200%)";
+            }
+          }
+        }
+      }
+    },
+
+    changeBackground_and_color(e) {
+      if (e.target != this.activatedLi) {
+        for (
+          let index = 0;
+          index < e.target.parentNode.children.length;
+          index++
+        ) {
+          const element = e.target.parentNode.children[index];
+
+          if (element != this.activatedLi) {
+            if (element != e.target) {
+              element.style.color =
+                this.common_li_color_and_background.common_li_color;
+              element.style.background = "none";
+            } else {
+              element.style.color =
+                this.common_li_color_and_background.common_li_color1;
+              element.style.background =
+                this.common_li_color_and_background.common_li_background;
+            }
+          }
+        }
+      }
+    },
+
+    changeBackground_and_color1() {
+      for (
+        let index = 0;
+        index < this.activatedLi.parentNode.children.length;
+        index++
+      ) {
+        const element = this.activatedLi.parentNode.children[index];
+
+        if (element != this.activatedLi) {
+          element.style.color =
+            this.common_li_color_and_background.common_li_color;
+          element.style.background = "none";
+        }
+      }
+    },
+
+    showDateFunc(e) {
+      this.show_date_p = e;
+
+      for (
+        let index = 0;
+        index < document.querySelector(`#messages`).children.length;
+        index++
+      ) {
+        const element1 = document.querySelector(`#messages`).children[index];
+
+        for (let index = 0; index < element1.children.length; index++) {
+          const element2 = element1.children[index];
+
+          if (element2.children.length != 0) {
+            for (let index = 0; index < element2.children.length; index++) {
+              const element3 = element2.children[index];
+
+              if (element3.className == "show_date_p") {
+                if (e == false) {
+                  element3.style.display = "none";
+                } else {
+                  element3.style.display = "block";
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (e == true) {
+        document.querySelector(".checkbox1Div div").style.transform =
+          "translate(110%)";
+
+        document.querySelector(".checkbox1Div div").style.background =
+          "rgb(41, 96, 249)";
+
+        document.querySelector(
+          ".addedClassForCheckboxDiv div"
+        ).style.transform = "translate(110%)";
+
+        document.querySelector(
+          ".addedClassForCheckboxDiv div"
+        ).style.background = "rgb(41, 96, 249)";
+      } else {
+        document.querySelector(".checkbox1Div div").style.transform =
+          "translate(0%)";
+
+        document.querySelector(".checkbox1Div div").style.background =
+          "#666666";
+
+        document.querySelector(
+          ".addedClassForCheckboxDiv div"
+        ).style.transform = "translate(0%)";
+
+        document.querySelector(
+          ".addedClassForCheckboxDiv div"
+        ).style.background = "#666666";
+      }
+    },
   },
 
   mounted() {
@@ -126,7 +336,82 @@ const app = {
     var _direction = "down";
     var _top = chatContainer.scrollTop;
     var local_sending_AN_AUDIO = false;
+    var forResizeAgain_voice;
 
+    //some window resize functions
+    this.hideHTML_1st_one = var_hideHTML_1st_one;
+
+    var sliderTab = () => {
+      this.sliderTab.style.transform = "translate(0%)";
+
+      this.sliderTab.nextSibling.style.transform = "translate(100%)";
+
+      this.sliderTab.nextSibling.nextSibling.style.transform =
+        "translate(200%)";
+    };
+
+    var colorThis = () => {
+      this.activatedLi.style.color =
+        this.common_li_color_and_background.common_li_color1;
+
+      this.activatedLi.style.background =
+        this.common_li_color_and_background.common_li_background;
+      this.activatedLi.style.boxShadow =
+        this.common_li_color_and_background.common_li_box_Shadow1;
+
+      this.activatedLi.nextSibling.style.color =
+        this.common_li_color_and_background.common_li_color;
+      this.activatedLi.nextSibling.style.background = "none";
+      this.activatedLi.nextSibling.style.boxShadow =
+        this.common_li_color_and_background.common_li_box_Shadow;
+
+      this.activatedLi.nextSibling.nextSibling.style.color =
+        this.common_li_color_and_background.common_li_color;
+      this.activatedLi.nextSibling.nextSibling.style.background = "none";
+      this.activatedLi.nextSibling.nextSibling.style.boxShadow =
+        this.common_li_color_and_background.common_li_box_Shadow;
+
+      sliderTab();
+    };
+
+    var resizeIfRisized = () => {
+      if (window.innerWidth <= 512) {
+        this.hideHTML_1st_one = true;
+        var_hideHTML_1st_one = true;
+
+        this.activatedLi = document.querySelector(
+          "#current_users1 #current_users_ul > li:nth-child(1)"
+        );
+
+        this.sliderTab = document.querySelector(
+          `#current_users1 #tab_content_container div:nth-child(1)`
+        );
+
+        colorThis();
+      } else {
+        this.hideHTML_1st_one = false;
+        var_hideHTML_1st_one = false;
+
+        this.activatedLi = document.querySelector(
+          "#current_users_ul > li:nth-child(1)"
+        );
+
+        this.sliderTab = document.querySelector(
+          `#current_users #tab_content_container div:nth-child(1)`
+        );
+
+        colorThis();
+      }
+    };
+
+    setTimeout(() => {
+      resizeIfRisized();
+    }, 1000);
+
+    window.addEventListener("resize", () => {
+      resizeIfRisized();
+    });
+    //
     const scroll_and_sound = () => {
       if (_direction == "down") {
         typing.scrollIntoView({
@@ -168,11 +453,26 @@ const app = {
 
         var messages_N = document.querySelector("#messages");
 
+        //date node
+        var n_div2_pEl = document.createElement("p");
+        n_div2_pEl.setAttribute("class", "show_date_p");
+
+        if (this.show_date == false) {
+          n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
+        } else {
+          n_div2_pEl.setAttribute("style", "display:block;font-size:14px");
+        }
+
+        var dateTxtNode = document.createTextNode(new Date());
+        n_div2_pEl.appendChild(dateTxtNode);
+
         if (u_id == userID1) {
           socket.emit("clicked_send_img", {
             data1: false,
             data2: {
-              mby1: document.querySelector("#inputDiv #name").value,
+              mby1:
+                document.querySelector("#name").value ||
+                document.querySelector("#name1").value,
               mby2: userID1,
             },
           });
@@ -183,16 +483,22 @@ const app = {
           n_div2.id = "extra_div_style_for_image";
 
           n_div2.appendChild(imgE1);
-
+          n_div2.appendChild(n_div2_pEl);
           n_div1.appendChild(n_div2);
 
           messages_N.appendChild(n_div1);
 
           document.getElementById("fileinput").value = "";
 
-          document
-            .querySelector(".image_snd_btn")
-            .classList.remove("image_send_d1");
+          if (var_hideHTML_1st_one == true) {
+            document
+              .querySelectorAll(".image_snd_btn")[1]
+              .classList.remove("image_send_d1");
+          } else {
+            document
+              .querySelectorAll(".image_snd_btn")[0]
+              .classList.remove("image_send_d1");
+          }
         } else {
           var n_div3 = document.createElement("div");
           n_div3.id = "notme_Dv";
@@ -209,7 +515,7 @@ const app = {
           n_div4.id = "extra_div_style_for_image";
 
           n_div4.appendChild(imgE1);
-
+          n_div4.appendChild(n_div2_pEl);
           n_div3.appendChild(n_div4);
 
           messages_N.appendChild(n_div3);
@@ -244,17 +550,33 @@ const app = {
         btnStartDiv = document.getElementById("btnStartDiv"),
         btnStartContainerDiv = document.getElementById("btnStartContainerDiv");
 
+      console.log();
+      //sidebar
       if (
         e.target != side_bar_javascript &&
+        e.target.parentNode.parentNode.parentNode != side_bar_javascript &&
+        e.target.parentNode.parentNode.parentNode.parentNode !=
+          side_bar_javascript &&
+        e.target.parentNode.parentNode.parentNode.parentNode.parentNode !=
+          side_bar_javascript &&
+        e.target.parentNode.parentNode.parentNode.parentNode.parentNode
+          .parentNode != side_bar_javascript &&
+        e.target.parentNode.parentNode.parentNode.parentNode.parentNode
+          .parentNode.parentNode != side_bar_javascript &&
         e.target.parentNode != side_bar_javascript &&
         e.target.parentNode != header1 &&
         e.target.parentNode != current_users1 &&
-        e.target.parentNode != current_users1_ul
+        e.target.parentNode != current_users1_ul &&
+        e.target != btnStartDiv &&
+        e.target != btnStartDiv &&
+        e.target != btnStartContainerDiv &&
+        e.target.parentNode != btnStartContainerDiv
       ) {
         this.side_Open = false;
         side_bar_javascript.style.transform = "translate(-100%)";
       }
 
+      //recorder
       if (
         e.target != btnStartDiv &&
         e.target != btnStartContainerDiv &&
@@ -422,10 +744,18 @@ const app = {
     });
 
     socket.on("chat", ({ nameValue, messageValue, io_id }) => {
-      if (io_id != userID1) {
-        messages.innerHTML += `<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre></div></div>`;
+      if (this.show_date == false) {
+        if (io_id != userID1) {
+          messages.innerHTML += `<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
+        } else {
+          messages.innerHTML += `<div id="me_Dv"><div><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
+        }
       } else {
-        messages.innerHTML += `<div id="me_Dv"><div><pre>${messageValue}</pre></div></div>`;
+        if (io_id != userID1) {
+          messages.innerHTML += `<div id="notme_Dv"><span>${nameValue}</span> <div><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
+        } else {
+          messages.innerHTML += `<div id="me_Dv"><div><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
+        }
       }
 
       typing.innerHTML = "";
@@ -583,7 +913,16 @@ const app = {
         alert("The File APIs are not fully supported in this browser.");
         return false;
       }
-      document.querySelector(".image_snd_btn").classList.add("image_send_d1");
+
+      if (var_hideHTML_1st_one == true) {
+        document
+          .querySelectorAll(".image_snd_btn")[1]
+          .classList.add("image_send_d1");
+      } else {
+        document
+          .querySelectorAll(".image_snd_btn")[0]
+          .classList.add("image_send_d1");
+      }
 
       if (
         this.files[0].type == "image/jpeg" ||
@@ -594,7 +933,9 @@ const app = {
           socket.emit("clicked_send_img", {
             data1: true,
             data2: {
-              mby1: document.querySelector("#inputDiv #name").value,
+              mby1:
+                document.querySelector("#name").value ||
+                document.querySelector("#name1").value,
               mby2: userID1,
             },
           });
@@ -603,18 +944,30 @@ const app = {
         } else {
           document.getElementById("fileinput").value = "";
 
-          document
-            .querySelector(".image_snd_btn")
-            .classList.remove("image_send_d1");
+          if (var_hideHTML_1st_one == true) {
+            document
+              .querySelectorAll(".image_snd_btn")[1]
+              .classList.remove("image_send_d1");
+          } else {
+            document
+              .querySelectorAll(".image_snd_btn")[0]
+              .classList.remove("image_send_d1");
+          }
 
           alert("Maximum file size around 25MB!");
         }
       } else {
         document.getElementById("fileinput").value = "";
 
-        document
-          .querySelector(".image_snd_btn")
-          .classList.remove("image_send_d1");
+        if (var_hideHTML_1st_one == true) {
+          document
+            .querySelectorAll(".image_snd_btn")[1]
+            .classList.remove("image_send_d1");
+        } else {
+          document
+            .querySelectorAll(".image_snd_btn")[0]
+            .classList.remove("image_send_d1");
+        }
 
         alert("Please insert a png or jpeg file!");
       }
@@ -654,7 +1007,9 @@ const app = {
         image: canvas.toDataURL("image/jpeg", 0.7),
         type: file.type,
         u_id: userID1,
-        user_pic_Name: document.querySelector("#inputDiv #name").value,
+        user_pic_Name:
+          document.querySelector("#name").value ||
+          document.querySelector("#name1").value,
         fileName: file.name,
       });
     }
@@ -664,9 +1019,11 @@ const app = {
     var audioIN = { audio: true };
     var ProcessStarted = false;
     var startVoiceRcord = false;
+    var this_event_ID;
 
-    document.getElementById("btnStartUp").addEventListener("click", () => {
+    var commonVoice = () => {
       if (this.sending_AN_AUDIO == false) {
+        this_event_ID = this.currentVoiceSendAnimation;
         document.getElementById("btnStartDiv").style.display = "flex";
 
         if (!ProcessStarted) {
@@ -754,6 +1111,7 @@ const app = {
                 }
               };
 
+              start.addEventListener("mouseleave", multipleEndEventsFunction);
               start.addEventListener("mouseup", multipleEndEventsFunction);
               start.addEventListener("touchend", multipleEndEventsFunction);
               start.addEventListener("touchcancel", multipleEndEventsFunction);
@@ -777,20 +1135,21 @@ const app = {
                   socket.emit("clicked_send_audio", {
                     data1: true,
                     data2: {
-                      mby1: document.querySelector("#inputDiv #name").value,
+                      mby1:
+                        document.querySelector("#name").value ||
+                        document.querySelector("#name1").value,
                       mby2: userID1,
                     },
                   });
 
-                  document
-                    .querySelector("#btnStartUp")
-                    .classList.add("image_send_d1");
+                  this_event_ID.classList.add("image_send_d1");
 
                   socket.emit("send_audio", {
                     dataArray,
                     u_id: userID1,
                     user_pic_Name:
-                      document.querySelector("#inputDiv #name").value,
+                      document.querySelector("#name").value ||
+                      document.querySelector("#name1").value,
                   });
 
                   dataArray = [];
@@ -804,7 +1163,32 @@ const app = {
       } else {
         alert("Please wait a voice message is in process..");
       }
-    });
+    };
+
+    //forResizeAgain_voice;
+    forResizeAgain_voice = () => {
+      document
+        .querySelectorAll(".btnStartUpID")[0]
+        .addEventListener("click", () => {
+          this.currentVoiceSendAnimation =
+            document.querySelectorAll(".btnStartUpID")[0];
+
+          commonVoice(this.currentVoiceSendAnimation);
+        });
+
+      document
+        .querySelectorAll(".btnStartUpID")[1]
+        .addEventListener("click", () => {
+          this.currentVoiceSendAnimation =
+            document.querySelectorAll(".btnStartUpID")[1];
+
+          commonVoice(this.currentVoiceSendAnimation);
+        });
+    };
+
+    setTimeout(() => {
+      forResizeAgain_voice();
+    }, 1000);
 
     socket.on("send_audio", ({ dataArray, u_id, user_pic_Name }) => {
       var blob1 = new Blob(dataArray, { type: "audio/mp3;" });
@@ -822,24 +1206,42 @@ const app = {
       //---------------------------------
       var messages_N = document.querySelector("#messages");
 
+      var n_div2_pEl = document.createElement("p");
+      n_div2_pEl.setAttribute("class", "show_date_p");
+
+      if (this.show_date == false) {
+        n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
+      } else {
+        n_div2_pEl.setAttribute("style", "display:block;font-size:14px");
+      }
+
+      var dateTxtNode = document.createTextNode(new Date());
+      n_div2_pEl.appendChild(dateTxtNode);
+
       if (u_id == userID1) {
         //clicked_send_audio
-        setTimeout(() => {
-          this.sending_AN_AUDIO = false;
-          local_sending_AN_AUDIO = false;
+        this.sending_AN_AUDIO = false;
+        local_sending_AN_AUDIO = false;
 
-          socket.emit("clicked_send_audio", {
-            data1: false,
-            data2: {
-              mby1: document.querySelector("#inputDiv #name").value,
-              mby2: userID1,
-            },
-          });
+        socket.emit("clicked_send_audio", {
+          data1: false,
+          data2: {
+            mby1:
+              document.querySelector("#name").value ||
+              document.querySelector("#name1").value,
+            mby2: userID1,
+          },
+        });
 
+        if (var_hideHTML_1st_one == true) {
           document
-            .querySelector("#btnStartUp")
+            .querySelector("#current_users1 #btnStartUp")
             .classList.remove("image_send_d1");
-        }, 10000);
+        } else {
+          document
+            .querySelector("#current_users #btnStartUp")
+            .classList.remove("image_send_d1");
+        }
 
         var n_div1 = document.createElement("div");
         n_div1.id = "me_Dv";
@@ -847,7 +1249,7 @@ const app = {
         n_div2.id = "extra_div_style_for_image1";
 
         n_div2.appendChild(audio);
-
+        n_div2.appendChild(n_div2_pEl);
         n_div1.appendChild(n_div2);
 
         messages_N.appendChild(n_div1);
@@ -867,7 +1269,7 @@ const app = {
         n_div4.id = "extra_div_style_for_image1";
 
         n_div4.appendChild(audio);
-
+        n_div4.appendChild(n_div2_pEl);
         n_div3.appendChild(n_div4);
 
         messages_N.appendChild(n_div3);

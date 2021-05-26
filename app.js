@@ -13,8 +13,6 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 io.on("connection", (socket) => {
-  console.log(socket.handshake.time);
-
   //---------------------------------
 
   //---------------------------------

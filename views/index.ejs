@@ -13,9 +13,7 @@
             <div class="bar_"></div>
           </div>
 
-          <h1>message application!</h1>
-
-          <button @click="copyToClipboard">Copy URL</button>
+          <h1>messagemenow1</h1>
         </div>
 
         <div id="under_header">
@@ -28,27 +26,6 @@
 
             <div id="inputDiv">
               <div>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Name.."
-                  autocomplete="off"
-                  @keyup="vueKeyup1()"
-                  v-model="user_name"
-                />
-
-                <button id="btnStartUp">Voice</button>
-              </div>
-
-              <div>
-                <button
-                  id="send"
-                  class="image_snd_btn"
-                  @click="clicked_on_send_image_vue"
-                >
-                  Image
-                </button>
-
                 <textarea
                   id="message"
                   type="text"
@@ -66,22 +43,211 @@
             </div>
           </div>
 
-          <div id="current_users">
-            <h2>
-              Active Now
-              <span id="total_active">{{ showCurrentUsers.length }}</span>
-            </h2>
+          <div v-show="!hideHTML_1st_one" id="current_users">
+            <ul id="current_users_ul">
+              <li
+                @mouseleave="changeBackground_and_color1()"
+                @mouseover="changeBackground_and_color($event)"
+                @click="tab_slider($event, 0)"
+              >
+                Activities
+              </li>
 
-            <ul>
-              <li v-for="(item, index) in showCurrentUsers" :key="index">
-                {{ item.showName }}
+              <li
+                @mouseleave="changeBackground_and_color1()"
+                @mouseover="changeBackground_and_color($event)"
+                @click="tab_slider($event, 1)"
+              >
+                Settings
+              </li>
+
+              <li
+                @mouseleave="changeBackground_and_color1()"
+                @mouseover="changeBackground_and_color($event)"
+                @click="tab_slider($event, 2)"
+              >
+                Docs
               </li>
             </ul>
+
+            <div id="tab_content_container">
+              <div>
+                <span id="name_and_more_sendings">
+                  <h3>Username</h3>
+                  <input
+                    id="name"
+                    type="text"
+                    placeholder="Name.."
+                    autocomplete="off"
+                    @keyup="vueKeyup1()"
+                    v-model="user_name"
+                  />
+
+                  <h3>Send</h3>
+                  <span>
+                    <button
+                      id="send"
+                      class="image_snd_btn"
+                      @click="clicked_on_send_image_vue"
+                    >
+                      Image
+                    </button>
+
+                    <button id="btnStartUp" class="btnStartUpID btnStartUp">
+                      Voice
+                    </button>
+                  </span>
+                </span>
+
+                <h3>
+                  Active Now
+                  <span id="total_active">{{ showCurrentUsers.length }}</span>
+                </h3>
+
+                <ul id="activeulList">
+                  <li v-for="(item, index) in showCurrentUsers" :key="index">
+                    {{ item.showName }}
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3>
+                  Show Date
+
+                  <label for="checkbox1">
+                    <div class="checkbox1Div">
+                      <div></div>
+                    </div>
+                  </label>
+
+                  <input
+                    id="checkbox1"
+                    class="checkbox1"
+                    type="checkbox"
+                    v-model="show_date"
+                    @change="showDateFunc(show_date)"
+                  />
+                </h3>
+              </div>
+
+              <div>
+                <div>
+                  <h3>
+                    Share
+                    <button id="headerButton1" @click="copyToClipboard">
+                      Copy URL
+                    </button>
+                  </h3>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div id="side_bar">
-          <div id="header1">
+          <div v-show="hideHTML_1st_one" id="current_users1">
+            <ul id="current_users_ul">
+              <li
+                @mouseleave="changeBackground_and_color1()"
+                @mouseover="changeBackground_and_color($event)"
+                @click="tab_slider($event, 0)"
+              >
+                Activities
+              </li>
+
+              <li
+                @mouseleave="changeBackground_and_color1()"
+                @mouseover="changeBackground_and_color($event)"
+                @click="tab_slider($event, 1)"
+              >
+                Settings
+              </li>
+
+              <li
+                @mouseleave="changeBackground_and_color1()"
+                @mouseover="changeBackground_and_color($event)"
+                @click="tab_slider($event, 2)"
+              >
+                Docs
+              </li>
+            </ul>
+
+            <div id="tab_content_container">
+              <div>
+                <span id="name_and_more_sendings">
+                  <h3>Username</h3>
+                  <input
+                    id="name1"
+                    type="text"
+                    placeholder="Name.."
+                    autocomplete="off"
+                    @keyup="vueKeyup1()"
+                    v-model="user_name"
+                  />
+
+                  <h3>Send</h3>
+                  <span>
+                    <button
+                      id="send"
+                      class="image_snd_btn"
+                      @click="clicked_on_send_image_vue"
+                    >
+                      Image
+                    </button>
+
+                    <button id="btnStartUp" class="btnStartUpID btnStartUp1">
+                      Voice
+                    </button>
+                  </span>
+                </span>
+
+                <h3>
+                  Active Now
+                  <span id="total_active">{{ showCurrentUsers.length }}</span>
+                </h3>
+
+                <ul id="activeulList">
+                  <li v-for="(item, index) in showCurrentUsers" :key="index">
+                    {{ item.showName }}
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3>
+                  Show Date
+
+                  <label for="checkbox12">
+                    <div class="checkbox1Div addedClassForCheckboxDiv">
+                      <div></div>
+                    </div>
+                  </label>
+
+                  <input
+                    id="checkbox12"
+                    class="checkbox1"
+                    type="checkbox"
+                    v-model="show_date"
+                    @change="showDateFunc(show_date)"
+                  />
+                </h3>
+              </div>
+
+              <div>
+                <div>
+                  <h3>
+                    Share
+                    <button id="headerButton12" @click="copyToClipboard">
+                      Copy URL
+                    </button>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--<div id="header1">
             <button @click="copyToClipboard">Copy URL</button>
           </div>
 
@@ -97,6 +263,7 @@
               </li>
             </ul>
           </div>
+          -->
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ pre {
 }
 
 #bar_container .bar_ {
-  background: linear-gradient(to right, #6eff00, #303030);
+  background: linear-gradient(to right, #2960f9, #303030);
   padding: 2px 0;
   margin: 5px;
   width: 100%;
@@ -56,7 +56,7 @@ pre {
   margin: 0 0 10px 0;
 }
 
-#header button,
+#headerButton1,
 #header1 button {
   padding: 10px 20px;
   margin: 0 0 0 10px;
@@ -70,7 +70,7 @@ pre {
   transition: all 150ms ease-in-out;
 }
 
-#header button:hover,
+#headerButton1:hover,
 #header1 button:hover {
   background: rgb(255, 0, 85);
   color: rgb(223, 223, 223);
@@ -82,75 +82,32 @@ pre {
 #under_header {
   position: relative;
   padding: 5px;
-  background: rgba(0, 255, 242, 0.151);
+  background: rgba(117, 0, 255, 0.15);
+  border-radius: 5px;
   display: flex;
   flex-direction: row-reverse;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
 }
 
 #chatContainer {
   position: relative;
-  width: 70%;
+  width: 75%;
 }
 
 #msg_Div {
   position: relative;
   padding: 5px;
-  height: 70vh;
+  height: 77vh;
   overflow-x: hidden;
-  background: rgba(0, 255, 242, 0.151);
+  background: rgba(41, 96, 249, 0.25);
   display: flex;
   flex-direction: column;
 }
 
 /*current_users*/
 
-#current_users,
-#current_users1 {
-  display: block;
-  position: relative;
-  padding: 5px;
-  width: 30%;
-  height: 70vh;
-}
-
-#current_users1 {
-  width: 95%;
-}
-
-#current_users h2,
-#current_users1 h2 {
-  margin: 5px 5px 10px 5px;
-}
-
-#current_users ul,
-#current_users1 ul {
-  list-style: none;
-  height: 83%;
-  overflow-x: hidden;
-}
-
-#current_users1 ul {
-  height: 90%;
-}
-
-#current_users1 ul {
-  height: 80vh;
-}
-
-#current_users ul li,
-#current_users1 ul li {
-  background: #0ff;
-  color: #303030;
-  font-weight: 500;
-  padding: 10px;
-  margin: 10px;
-  word-break: break-word;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-}
-
 #total_active {
-  font-size: 18px;
+  font-size: 16px;
   color: #ffffff;
   background: #ff00d7;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
@@ -162,7 +119,6 @@ pre {
   position: fixed;
   bottom: 0;
   left: 0;
-  background: rgba(0, 255, 136, 0.507);
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -170,7 +126,7 @@ pre {
   z-index: 2;
 }
 
-#inputDiv div:last-child {
+#inputDiv div {
   display: flex;
   width: 100%;
 }
@@ -191,27 +147,25 @@ pre {
   font-weight: 500;
   border: none;
   margin: 2px;
-  resize: vertical;
+  resize: none;
   max-height: 20vh;
   min-height: 7vh;
+  border-radius: 5px;
   transition: all 150ms ease-in-out;
-}
-
-#inputDiv #message:focus {
-  height: 15vh;
 }
 
 #inputDiv button {
   width: 20%;
-  background: rgba(10, 190, 106, 0.815);
-  color: #303030;
+  background: rgba(41, 96, 249);
+  color: #fff;
   cursor: pointer;
   transition: all 150ms ease-in-out;
+  font-weight: 400;
+  border-radius: 5px;
 }
 
 #inputDiv button:hover {
-  background: rgba(0, 255, 136, 0.815);
-  color: #303030;
+  background: rgba(0, 44, 167, 0.815);
 }
 
 #messages {
@@ -227,8 +181,9 @@ pre {
 }
 
 #me_Dv div {
-  background: rgba(0, 255, 157, 0.822);
-  color: #303030;
+  background: rgb(41, 96, 249);
+  color: #ffffff;
+  border-radius: 5px;
   font-size: 18px;
   font-weight: 500;
   padding: 10px;
@@ -249,6 +204,7 @@ pre {
 #notme_Dv div {
   background: rgb(255, 255, 255);
   color: #303030;
+  border-radius: 5px;
   font-size: 18px;
   font-weight: 500;
   padding: 10px;
@@ -317,7 +273,7 @@ pre {
 
 #btnStartDiv {
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -349,6 +305,167 @@ pre {
 
 #btnStartDiv div #btnStart:hover {
   background-color: #fff;
+}
+
+/*current_users*/
+#current_users,
+#current_users1 {
+  position: relative;
+  width: 25%;
+  padding: 5px;
+  overflow: hidden;
+  background: #dedede;
+}
+
+#current_users1 {
+  width: 95%;
+  height: 95%;
+}
+
+#current_users_ul {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+}
+
+#current_users_ul li {
+  font-size: 18px;
+  font-weight: 500;
+  color: #747474;
+  padding: 3px;
+  margin: 3px;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+}
+
+#current_users_ul li {
+  user-select: none;
+  list-style: none;
+  border-radius: 5px;
+}
+
+#tab_content_container {
+  display: flex;
+  flex-direction: row;
+}
+
+#tab_content_container > div {
+  position: absolute;
+  width: 94%;
+  height: 85%;
+  padding: 10px;
+  overflow: hidden;
+}
+
+#tab_content_container div {
+  transition: transform 150ms ease-in-out;
+}
+
+#tab_content_container div:nth-child(1) {
+  transform: translate(0%);
+}
+#tab_content_container div:nth-child(2) {
+  transform: translate(100%);
+}
+#tab_content_container div:nth-child(3) {
+  transform: translate(200%);
+}
+
+#tab_content_container div:nth-child(1) input {
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  margin-top: 2px;
+  border-radius: 5px;
+}
+
+#tab_content_container div:nth-child(1) button {
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  margin: 4px;
+  background: rgba(0, 68, 255, 0.815);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  transition: background 150ms ease-in-out;
+}
+
+#tab_content_container div:nth-child(1) button:hover {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+#tab_content_container div:nth-child(1) button:hover {
+  background: rgba(0, 44, 167, 0.815);
+  color: #fff;
+}
+
+#tab_content_container div :is(h3) {
+  color: #454545;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+#activeulList {
+  overflow-x: hidden;
+  height: 64%;
+  margin-top: 10px;
+}
+
+#activeulList li {
+  background: rgb(143, 255, 196);
+  color: #404040;
+  font-weight: 500;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  margin: 10px 0;
+  padding: 5px;
+  width: 90%;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/*name_and_more_sendings*/
+
+#name_and_more_sendings {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/*type="checkbox"*/
+
+input.checkbox1 {
+  position: relative;
+  display: none;
+}
+
+.checkbox1Div {
+  position: relative !important;
+  height: 18px !important;
+  width: 38px !important;
+  margin-top: 10px;
+  background: #fff;
+  padding: unset !important;
+  border-radius: 15px;
+  box-shadow: inset 0px 1px 1px 1px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.checkbox1Div div {
+  padding: unset !important;
+  position: relative !important;
+  height: 18px !important;
+  width: 18px !important;
+  background: #666666;
+  border-radius: 50% !important;
+  transition: background 150ms ease-in-out;
 }
 
 /*keyframes*/
@@ -401,12 +518,48 @@ pre {
 
 /*media*/
 
+@media screen and (max-width: 901px) {
+  #chatContainer {
+    width: 70%;
+  }
+  #current_users {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 801px) {
+  #chatContainer {
+    width: 65%;
+  }
+  #current_users {
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 691px) {
+  #chatContainer {
+    width: 60%;
+  }
+  #current_users {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 591px) {
+  #chatContainer {
+    width: 55%;
+  }
+  #current_users {
+    width: 45%;
+  }
+}
+
 @media screen and (max-width: 512px) {
   #bar_container {
     display: block;
   }
 
-  #header button {
+  #headerButton1 {
     display: none;
   }
 
@@ -418,22 +571,14 @@ pre {
     width: 100%;
   }
 
-  #inputDiv #message:focus {
-    height: 20vh;
-  }
-
   #extra_div_style_for_image {
     max-width: 70% !important;
     padding: 5px !important;
   }
 }
 
-@media screen and (max-width: 381px) {
+@media screen and (max-width: 323px) {
   #header h1 {
     font-size: 23px;
-  }
-
-  #msg_Div {
-    height: 72vh;
   }
 }

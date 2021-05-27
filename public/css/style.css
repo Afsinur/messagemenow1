@@ -17,6 +17,10 @@ pre {
   white-space: pre-wrap;
 }
 
+ul {
+  list-style: none;
+}
+
 #under_app {
   position: relative;
   padding: 10px;
@@ -461,6 +465,7 @@ input.checkbox1 {
 .color_ul li {
   color: #444444;
   font-weight: 500;
+  margin-left: 10px;
 }
 
 .resetColorBtn {
@@ -604,6 +609,10 @@ input[type="color"] {
   #extra_div_style_for_image {
     max-width: 70% !important;
     padding: 5px !important;
+  }
+
+  .info_ul {
+    height: 75vh;
   }
 }
 

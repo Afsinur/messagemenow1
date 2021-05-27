@@ -594,10 +594,6 @@ input[type="color"] {
     display: block;
   }
 
-  #headerButton1 {
-    display: none;
-  }
-
   #current_users {
     display: none;
   }

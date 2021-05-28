@@ -503,6 +503,33 @@ input[type="color"] {
   word-break: break-word;
 }
 
+/*preLoader1*/
+
+#preLoader1 {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: #dedede;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#preLoader1 > div {
+  position: relative;
+  height: 100px;
+  width: 100px;
+  background: #dedede;
+  border: 5px solid #2960f9;
+  border-radius: 50%;
+  transition: transform 150ms ease-in-out;
+  animation: sending_prev_data 800ms forwards infinite;
+}
+
 /*keyframes*/
 @keyframes sending_image {
   0% {
@@ -548,6 +575,53 @@ input[type="color"] {
   100% {
     background: linear-gradient(to right, #00a2ff 100%, #303030 100%);
     transition: all 150ms ease-in-out;
+  }
+}
+
+@keyframes sending_prev_data {
+  0% {
+    transform: scale(0);
+    transition: transform 150ms ease-in-out;
+  }
+  10% {
+    transform: scale(0.1);
+    transition: transform 150ms ease-in-out;
+  }
+  20% {
+    transform: scale(0.2);
+    transition: transform 150ms ease-in-out;
+  }
+  30% {
+    transform: scale(0.3);
+    transition: transform 150ms ease-in-out;
+  }
+  40% {
+    transform: scale(0.4);
+    transition: transform 150ms ease-in-out;
+  }
+  50% {
+    transform: scale(0.5);
+    transition: transform 150ms ease-in-out;
+  }
+  60% {
+    transform: scale(0.6);
+    transition: transform 150ms ease-in-out;
+  }
+  70% {
+    transform: scale(0.7);
+    transition: transform 150ms ease-in-out;
+  }
+  80% {
+    transform: scale(0.8);
+    transition: transform 150ms ease-in-out;
+  }
+  90% {
+    transform: scale(0.9);
+    transition: transform 150ms ease-in-out;
+  }
+  100% {
+    transform: scale(1);
+    transition: transform 150ms ease-in-out;
   }
 }
 

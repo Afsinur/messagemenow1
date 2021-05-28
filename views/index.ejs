@@ -4,7 +4,7 @@
 
   <body>
     <div id="app">
-      <div id="under_app">
+      <div id="under_app" v-show="!processing_Prev_users_chats">
         <div id="header">
           <div id="bar_container" @click="active_side(side_Open)">
             <div class="bar_"></div>
@@ -515,6 +515,10 @@
           </div>
           -->
         </div>
+      </div>
+
+      <div id="preLoader1" v-show="processing_Prev_users_chats">
+        <div></div>
       </div>
     </div>
 

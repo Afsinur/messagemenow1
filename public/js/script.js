@@ -62,6 +62,7 @@ const app = {
         background1: "#ffffff",
         chatbox: "#a4a6e8",
       },
+      processing_Prev_users_chats: true,
     };
   },
 
@@ -1043,6 +1044,8 @@ const app = {
     });
 
     socket.on("sendMeChattings", (data) => {
+      this.processing_Prev_users_chats = false;
+
       if (allTypeOfMessagesTxtFormCollection.length > 0) {
         socket.emit("okSendingChattings", {
           dataID: userID1,
@@ -1070,6 +1073,8 @@ const app = {
               how_manyTimesMaxNumber < 1
             ) {
               how_manyTimesMaxNumber++;
+
+              this.processing_Prev_users_chats = true;
 
               socket.emit("getRealDatabase", { data: e.dataID, from: userID1 });
             }
@@ -1205,6 +1210,9 @@ const app = {
               setTimeout(() => {
                 scroll_and_sound();
               }, 100);
+
+              //processing_Prev_users_chats
+              this.processing_Prev_users_chats = false;
             }
           });
         }

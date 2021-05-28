@@ -1,13 +1,14 @@
 const socket = io("/");
 
-var userID1;
-var count_userID1 = 0;
-var activeIds = [];
-var active_name_with_id = [];
-var showNames_and_ids = [];
-var var_hideHTML_1st_one = null;
-var var_activatedLi = null;
-var window_innerWidth = window.innerWidth;
+var userID1,
+  count_userID1 = 0,
+  activeIds = [],
+  active_name_with_id = [],
+  showNames_and_ids = [],
+  var_hideHTML_1st_one = null,
+  var_activatedLi = null,
+  window_innerWidth = window.innerWidth,
+  allTypeOfMessagesTxtFormCollection = [];
 
 //-----------------------------
 
@@ -533,7 +534,7 @@ const app = {
     window.addEventListener("resize", () => {
       resizeIfRisized();
     });
-    //
+
     const scroll_and_sound = () => {
       if (_direction == "down") {
         typing.scrollIntoView({
@@ -548,110 +549,8 @@ const app = {
       }
     };
 
-    //send pictures
-    socket.on("clicked_send_img", ({ data1, data2 }) => {
-      this.sending_AN_IMG = data1;
-      this.sending_AN_IMG1 = data2;
-    });
-
-    //send audio
-    socket.on("clicked_send_audio", ({ data1, data2 }) => {
-      this.sending_AN_AUDIO = data1;
-      this.sending_AN_AUDIO1 = data2;
-
-      local_sending_AN_AUDIO = this.sending_AN_AUDIO;
-    });
-
     document.getElementById("file").addEventListener("change", () => {
       document.getElementById("fileinput").click();
-    });
-
-    socket.on("getImage", ({ image, type, u_id, user_pic_Name }) => {
-      // create image with
-      if (type == "image/jpeg" || type == "image/png" || type == "image/jpg") {
-        var imgE1 = document.createElement("img");
-        imgE1.style = "width: 100%;";
-        imgE1.src = `${image}`;
-
-        var messages_N = document.querySelector("#messages");
-
-        //date node
-        var n_div2_pEl = document.createElement("p");
-        n_div2_pEl.setAttribute("class", "show_date_p");
-
-        if (this.show_date == false) {
-          n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
-        } else {
-          n_div2_pEl.setAttribute("style", "display:block;font-size:14px");
-        }
-
-        var dateTxtNode = document.createTextNode(new Date());
-        n_div2_pEl.appendChild(dateTxtNode);
-
-        if (u_id == userID1) {
-          socket.emit("clicked_send_img", {
-            data1: false,
-            data2: {
-              mby1:
-                document.querySelector("#name").value ||
-                document.querySelector("#name1").value,
-              mby2: userID1,
-            },
-          });
-
-          var n_div1 = document.createElement("div");
-          n_div1.id = "me_Dv";
-          var n_div2 = document.createElement("div");
-          n_div2.id = "extra_div_style_for_image";
-          n_div2.style = `background:${this.defaultColors_edited.background}`;
-
-          n_div2.appendChild(imgE1);
-          n_div2.appendChild(n_div2_pEl);
-          n_div1.appendChild(n_div2);
-
-          messages_N.appendChild(n_div1);
-
-          document.getElementById("fileinput").value = "";
-
-          if (var_hideHTML_1st_one == true) {
-            document
-              .querySelectorAll(".image_snd_btn")[1]
-              .classList.remove("image_send_d1");
-          } else {
-            document
-              .querySelectorAll(".image_snd_btn")[0]
-              .classList.remove("image_send_d1");
-          }
-        } else {
-          var n_div3 = document.createElement("div");
-          n_div3.id = "notme_Dv";
-          var spn_1 = document.createElement("span");
-          var ckeck_var = user_pic_Name || u_id;
-
-          var txtNode = document.createTextNode(ckeck_var);
-
-          spn_1.appendChild(txtNode);
-          spn_1.style = `color:${this.defaultColors_edited.text1}`;
-
-          n_div3.appendChild(spn_1);
-
-          var n_div4 = document.createElement("div");
-          n_div4.id = "extra_div_style_for_image";
-          n_div4.style = `background:${this.defaultColors_edited.background1}`;
-
-          n_div4.appendChild(imgE1);
-          n_div4.appendChild(n_div2_pEl);
-          n_div3.appendChild(n_div4);
-
-          messages_N.appendChild(n_div3);
-        }
-
-        setTimeout(() => {
-          scroll_and_sound();
-        }, 100);
-      } else {
-        alert("Please insert a png or jpeg file!");
-      }
     });
 
     //scroll function
@@ -675,7 +574,6 @@ const app = {
         btnStartDiv = document.getElementById("btnStartDiv"),
         btnStartContainerDiv = document.getElementById("btnStartContainerDiv");
 
-      console.log();
       //sidebar
       if (
         e.target != side_bar_javascript &&
@@ -711,299 +609,10 @@ const app = {
       }
     });
 
-    //listen for socket
-    socket.emit("join-room", ROOM_ID);
-
-    socket.on("user-connected", ({ sockets, userID }) => {
-      for (const key in sockets) {
-        if (Object.hasOwnProperty.call(sockets, key)) {
-          if (!activeIds.includes(key)) {
-            activeIds.push(key);
-          }
-        }
-      }
-
-      active_name_with_id = [];
-
-      activeIds.forEach((ac_id_w_nm, i) => {
-        var name_in_Ar = {
-          name: null,
-          id: ac_id_w_nm,
-        };
-
-        active_name_with_id.push(name_in_Ar);
-
-        if (i + 1 == activeIds.length) {
-          var tmp_array_start = [];
-
-          if (showNames_and_ids.length > 0) {
-            var tmp_array_start_1 = [];
-
-            active_name_with_id.forEach((item, i) => {
-              showNames_and_ids.forEach((it, i) => {
-                if (it.id == item.id) {
-                  tmp_array_start_1.push(it.id);
-                }
-              });
-
-              if (i + 1 == active_name_with_id.length) {
-                var tmp_array_start_12 = [];
-
-                active_name_with_id.forEach((it, i) => {
-                  if (tmp_array_start_1.includes(it.id)) {
-                    var very_sml = it.id;
-
-                    showNames_and_ids.forEach((it, i) => {
-                      if (it.id == very_sml) {
-                        tmp_array_start_12.push({
-                          showName: it.showName,
-                          id: it.id,
-                        });
-                      }
-                    });
-                  } else {
-                    tmp_array_start_12.push({ showName: it.id, id: it.id });
-                  }
-
-                  if (i + 1 == active_name_with_id.length) {
-                    this.showCurrentUsers = tmp_array_start_12;
-                  }
-                });
-              }
-            });
-          } else {
-            active_name_with_id.forEach((item, i) => {
-              if (item.name == null) {
-                tmp_array_start.push({ showName: item.id, id: item.id });
-              } else {
-                tmp_array_start.push({ showName: item.name, id: item.id });
-              }
-
-              if (i + 1 == active_name_with_id.length) {
-                this.showCurrentUsers = tmp_array_start;
-              }
-            });
-          }
-        }
-      });
-
-      if (count_userID1 < 1) {
-        count_userID1++;
-        userID1 = userID;
-      }
-
-      if (showNames_and_ids.length <= 0) {
-        var name_in_Ar_21 = {
-          showName: userID1,
-          id: userID1,
-        };
-
-        socket.emit("get_userNames", {
-          curr_usr: showNames_and_ids,
-          extra: name_in_Ar_21,
-        });
-      } else {
-        socket.emit("get_userNames", {
-          curr_usr: this.showCurrentUsers,
-          extra: null,
-        });
-      }
-    });
-
-    socket.on("leaved", (userID) => {
-      var temp_array_ofDel = [];
-      typing.innerHTML = "";
-
-      this.showCurrentUsers.forEach((it, i) => {
-        if (it.id != userID) {
-          temp_array_ofDel.push(it);
-        }
-
-        if (i + 1 == this.showCurrentUsers.length) {
-          this.showCurrentUsers = temp_array_ofDel;
-
-          var temp_array_ofDel_1 = [];
-          activeIds.forEach((it, i) => {
-            if (it != userID) {
-              temp_array_ofDel_1.push(it);
-            }
-
-            if (i + 1 == activeIds.length) {
-              activeIds = temp_array_ofDel_1;
-
-              var temp_array_ofDel_2 = [];
-              active_name_with_id.forEach((it, i) => {
-                if (it.id != userID) {
-                  temp_array_ofDel_2.push(it);
-                }
-
-                if (i + 1 == active_name_with_id.length) {
-                  active_name_with_id = temp_array_ofDel_2;
-
-                  var temp_array_ofDel_3 = [];
-                  showNames_and_ids.forEach((it, i) => {
-                    if (it.id != userID) {
-                      temp_array_ofDel_3.push(it);
-                    }
-
-                    if (i + 1 == showNames_and_ids.length) {
-                      showNames_and_ids = temp_array_ofDel_3;
-                    }
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
-
-      //image
-      if (this.sending_AN_IMG1.mby2 == userID) {
-        this.sending_AN_IMG = false;
-      }
-
-      //audio
-      if (this.sending_AN_AUDIO1.mby2 == userID) {
-        this.sending_AN_AUDIO = false;
-      }
-    });
-
-    socket.on("chat", ({ nameValue, messageValue, io_id }) => {
-      if (this.show_date == false) {
-        if (io_id != userID1) {
-          messages.innerHTML += `<div id="notme_Dv"><span style="color:${
-            this.defaultColors_edited.text1
-          }">${nameValue}</span> <div style="color:${
-            this.defaultColors_edited.text1
-          };background:${
-            this.defaultColors_edited.background1
-          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
-        } else {
-          messages.innerHTML += `<div id="me_Dv"><div style="color:${
-            this.defaultColors_edited.text
-          };background:${
-            this.defaultColors_edited.background
-          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: none; font-size: 14px;">${new Date()}</p></div></div>`;
-        }
-      } else {
-        if (io_id != userID1) {
-          messages.innerHTML += `<div id="notme_Dv"><span style="color:${
-            this.defaultColors_edited.text1
-          }">${nameValue}</span> <div style="color:${
-            this.defaultColors_edited.text1
-          };background:${
-            this.defaultColors_edited.background1
-          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
-        } else {
-          messages.innerHTML += `<div id="me_Dv"><div style="color:${
-            this.defaultColors_edited.text
-          };background:${
-            this.defaultColors_edited.background
-          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: block; font-size: 14px;">${new Date()}</p></div></div>`;
-        }
-      }
-
-      typing.innerHTML = "";
-      matchDataName = [];
-
-      setTimeout(() => {
-        scroll_and_sound();
-      }, 100);
-    });
-
-    socket.on("typing", (data) => {
-      if (data != null) {
-        if (matchDataName.length == 0) {
-          typing.innerHTML = `<p id="tp_ing" style="font-weight:500;color:${this.defaultColors_edited.text1}"><em>${data}</em> is tpying a message..</p>`;
-          matchDataName.push(data);
-        } else {
-          if (!matchDataName.includes(data)) {
-            typing.innerHTML += `<p id="tp_ing" style="font-weight:500;color:${this.defaultColors_edited.text1}"><em>${data}</em> is tpying a message..</p>`;
-            matchDataName.push(data);
-          }
-        }
-      } else {
-        typing.innerHTML = "";
-        matchDataName = [];
-      }
-
-      if (_direction == "down") {
-        typing.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        });
-      }
-    });
-
-    socket.on("typing_name", (data) => {
-      var tempArray_1 = [];
-
-      active_name_with_id.forEach((ac_ids, i) => {
-        if (ac_ids.id == data.userID1) {
-          var name_in_Ar_1 = {
-            name: data.userName,
-            id: data.userID1,
-          };
-
-          tempArray_1.push(name_in_Ar_1);
-        } else {
-          tempArray_1.push(ac_ids);
-        }
-
-        if (i + 1 == active_name_with_id.length) {
-          active_name_with_id = tempArray_1;
-          var tempArray_2 = [];
-
-          active_name_with_id.forEach((item, i) => {
-            if (item.name == null) {
-              tempArray_2.push({ showName: item.id, id: item.id });
-            } else {
-              tempArray_2.push({ showName: item.name, id: item.id });
-            }
-
-            if (i + 1 == active_name_with_id.length) {
-              showNames_and_ids = tempArray_2;
-
-              this.showCurrentUsers = showNames_and_ids;
-            }
-          });
-        }
-      });
-    });
-
-    socket.on("get_userNames", (data) => {
-      if (data.extra != null) {
-        if (data_with_null != null) {
-          var new_Array_temp = data_with_null.curr_usr;
-
-          this.showCurrentUsers = new_Array_temp;
-
-          var temp_array_for_showName_to_name = [];
-          this.showCurrentUsers.forEach((it, i) => {
-            temp_array_for_showName_to_name.push({
-              name: it.showName,
-              id: it.id,
-            });
-
-            if (i + 1 == this.showCurrentUsers.length) {
-              active_name_with_id = temp_array_for_showName_to_name;
-            }
-          });
-        }
-      } else {
-        data_with_null = data;
-      }
-    });
-
     //send Image
     var fileinput = document.getElementById("fileinput");
-
     var max_width = fileinput.getAttribute("data-maxwidth");
     var max_height = fileinput.getAttribute("data-maxheight");
-
-    var preview = document.getElementById("preview");
-
     var form = document.getElementById("form");
 
     function processfile(file) {
@@ -1026,7 +635,6 @@ const app = {
         var image = new Image();
 
         image.src = blobURL;
-        //preview.appendChild(image); // preview commented out, I am using the canvas instead
         image.onload = function () {
           // have to wait till it's loaded
           resizeMe(image, file);
@@ -1037,16 +645,12 @@ const app = {
     function readfiles(files) {
       // remove the existing canvases and hidden inputs if user re-selects new pics
       var existinginputs = document.getElementsByName("images[]");
-      var existingcanvases = document.getElementsByTagName("canvas");
       while (existinginputs.length > 0) {
-        // it's a live list so removing the first element each time
-        // DOMNode.prototype.remove = function() {this.parentNode.removeChild(this);}
         form.removeChild(existinginputs[0]);
-        preview.removeChild(existingcanvases[0]);
       }
 
       for (var i = 0; i < files.length; i++) {
-        processfile(files[i]); // process each file at once
+        processfile(files[i]);
       }
     }
 
@@ -1119,7 +723,6 @@ const app = {
     };
 
     // === RESIZE ====
-
     function resizeMe(img, file) {
       var canvas = document.createElement("canvas");
 
@@ -1160,7 +763,6 @@ const app = {
     }
 
     //==== Audio section ====
-
     var audioIN = { audio: true };
     var ProcessStarted = false;
     var startVoiceRcord = false;
@@ -1335,6 +937,634 @@ const app = {
       forResizeAgain_voice();
     }, 1000);
 
+    //listen and emit for sockets
+    socket.emit("join-room", ROOM_ID);
+
+    socket.on("user-connected", ({ sockets, userID }) => {
+      for (const key in sockets) {
+        if (Object.hasOwnProperty.call(sockets, key)) {
+          if (!activeIds.includes(key)) {
+            activeIds.push(key);
+          }
+        }
+      }
+
+      active_name_with_id = [];
+
+      activeIds.forEach((ac_id_w_nm, i) => {
+        var name_in_Ar = {
+          name: null,
+          id: ac_id_w_nm,
+        };
+
+        active_name_with_id.push(name_in_Ar);
+
+        if (i + 1 == activeIds.length) {
+          var tmp_array_start = [];
+
+          if (showNames_and_ids.length > 0) {
+            var tmp_array_start_1 = [];
+
+            active_name_with_id.forEach((item, i) => {
+              showNames_and_ids.forEach((it, i) => {
+                if (it.id == item.id) {
+                  tmp_array_start_1.push(it.id);
+                }
+              });
+
+              if (i + 1 == active_name_with_id.length) {
+                var tmp_array_start_12 = [];
+
+                active_name_with_id.forEach((it, i) => {
+                  if (tmp_array_start_1.includes(it.id)) {
+                    var very_sml = it.id;
+
+                    showNames_and_ids.forEach((it, i) => {
+                      if (it.id == very_sml) {
+                        tmp_array_start_12.push({
+                          showName: it.showName,
+                          id: it.id,
+                        });
+                      }
+                    });
+                  } else {
+                    tmp_array_start_12.push({ showName: it.id, id: it.id });
+                  }
+
+                  if (i + 1 == active_name_with_id.length) {
+                    this.showCurrentUsers = tmp_array_start_12;
+                  }
+                });
+              }
+            });
+          } else {
+            active_name_with_id.forEach((item, i) => {
+              if (item.name == null) {
+                tmp_array_start.push({ showName: item.id, id: item.id });
+              } else {
+                tmp_array_start.push({ showName: item.name, id: item.id });
+              }
+
+              if (i + 1 == active_name_with_id.length) {
+                this.showCurrentUsers = tmp_array_start;
+              }
+            });
+          }
+        }
+      });
+
+      if (count_userID1 < 1) {
+        count_userID1++;
+        userID1 = userID;
+      }
+
+      if (showNames_and_ids.length <= 0) {
+        var name_in_Ar_21 = {
+          showName: userID1,
+          id: userID1,
+        };
+
+        socket.emit("get_userNames", {
+          curr_usr: showNames_and_ids,
+          extra: name_in_Ar_21,
+        });
+      } else {
+        socket.emit("get_userNames", {
+          curr_usr: this.showCurrentUsers,
+          extra: null,
+        });
+      }
+
+      //allTypeOfMessagesTxtFormCollection
+      if (allTypeOfMessagesTxtFormCollection.length == 0) {
+        //sendMeChattings
+        socket.emit("sendMeChattings", activeIds.length);
+      }
+    });
+
+    socket.on("sendMeChattings", (data) => {
+      if (allTypeOfMessagesTxtFormCollection.length > 0) {
+        socket.emit("okSendingChattings", {
+          dataID: userID1,
+          dataLength: allTypeOfMessagesTxtFormCollection.length,
+          totalUserLen: data,
+        });
+      }
+    });
+
+    var newArr1 = [];
+    var newArr1_withData = [];
+    var arrived_okSendingChattings = 0;
+    var how_manyTimesMaxNumber = 0;
+    socket.on("okSendingChattings", ({ dataID, dataLength, totalUserLen }) => {
+      if (allTypeOfMessagesTxtFormCollection.length <= 0) {
+        newArr1.push(dataLength);
+        newArr1_withData.push({ dataID, dataLength });
+        var maxNumberOfThisArray = Math.max(...newArr1);
+
+        arrived_okSendingChattings++;
+        if (arrived_okSendingChattings == totalUserLen - 1) {
+          newArr1_withData.forEach((e) => {
+            if (
+              e.dataLength == maxNumberOfThisArray &&
+              how_manyTimesMaxNumber < 1
+            ) {
+              how_manyTimesMaxNumber++;
+
+              socket.emit("getRealDatabase", { data: e.dataID, from: userID1 });
+            }
+          });
+        }
+      }
+    });
+
+    //getRealDatabase
+    socket.on("getRealDatabase", ({ data, from }) => {
+      if (data == userID1) {
+        //
+        //allTypeOfMessagesTxtFormCollection
+        for (
+          let index = 0;
+          index < allTypeOfMessagesTxtFormCollection.length;
+          index++
+        ) {
+          const elm1 = allTypeOfMessagesTxtFormCollection[index];
+
+          socket.emit("okgettingRealDatabase", {
+            elm1,
+            from,
+            elm1Length: allTypeOfMessagesTxtFormCollection.length,
+          });
+        }
+      }
+    });
+
+    //
+    var countOnce1 = 0;
+    socket.on("okgettingRealDatabase", ({ elm1, from, elm1Length }) => {
+      if (from == userID1) {
+        countOnce1++;
+
+        if (elm1.showName != "") {
+          allTypeOfMessagesTxtFormCollection.push(elm1);
+        } else {
+          elm1.showName = elm1.id;
+          allTypeOfMessagesTxtFormCollection.push(elm1);
+        }
+
+        if (countOnce1 == elm1Length) {
+          allTypeOfMessagesTxtFormCollection.forEach((e, e_12) => {
+            //e.type == "chat, image, audio"
+            if (e.type == "chat") {
+              var inside_Show_dateFuc = (display_e) => {
+                messages.innerHTML += `<div id="notme_Dv"><span style="color:${this.defaultColors_edited.text1}">${e.showName}</span> <div style="color:${this.defaultColors_edited.text1};background:${this.defaultColors_edited.background1};"><pre>${e.message}</pre><p class="show_date_p" style="display: ${display_e}; font-size: 14px;">${e.date}</p></div></div>`;
+              };
+
+              //none
+              inside_Show_dateFuc("none");
+            } else if (e.type == "image") {
+              var imgE1 = document.createElement("img");
+              imgE1.style = "width: 100%;";
+              imgE1.src = `${e.message}`;
+
+              var messages_N = document.querySelector("#messages");
+
+              //date node
+              var n_div2_pEl = document.createElement("p");
+              n_div2_pEl.setAttribute("class", "show_date_p");
+              n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
+
+              var dateTxtNode = document.createTextNode(e.date);
+              n_div2_pEl.appendChild(dateTxtNode);
+
+              var n_div3 = document.createElement("div");
+              n_div3.id = "notme_Dv";
+              var spn_1 = document.createElement("span");
+              var ckeck_var = e.showName;
+
+              var txtNode = document.createTextNode(ckeck_var);
+
+              spn_1.appendChild(txtNode);
+              spn_1.style = `color:${this.defaultColors_edited.text1}`;
+
+              n_div3.appendChild(spn_1);
+
+              var n_div4 = document.createElement("div");
+              n_div4.id = "extra_div_style_for_image";
+              n_div4.style = `background:${this.defaultColors_edited.background1}`;
+
+              n_div4.appendChild(imgE1);
+              n_div4.appendChild(n_div2_pEl);
+              n_div3.appendChild(n_div4);
+
+              messages_N.appendChild(n_div3);
+            } else if (e.type == "audio") {
+              var blob1 = new Blob(e.message, { type: "audio/mp3;" });
+
+              window.URL = window.URL || window.webkitURL;
+              var blobURL1 = window.URL.createObjectURL(blob1);
+
+              var audio = document.createElement("audio");
+              audio.src = blobURL1;
+              audio.style = "max-width:100%";
+              audio.controls = "controls";
+
+              var messages_N = document.querySelector("#messages");
+
+              var n_div2_pEl = document.createElement("p");
+              n_div2_pEl.setAttribute("class", "show_date_p");
+              n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
+
+              var dateTxtNode = document.createTextNode(e.date);
+              n_div2_pEl.appendChild(dateTxtNode);
+
+              var n_div3 = document.createElement("div");
+              n_div3.id = "notme_Dv";
+              var spn_1 = document.createElement("span");
+              var ckeck_var = e.showName;
+
+              var txtNode = document.createTextNode(ckeck_var);
+
+              spn_1.appendChild(txtNode);
+              spn_1.style = `color:${this.defaultColors_edited.text1}`;
+
+              n_div3.appendChild(spn_1);
+
+              var n_div4 = document.createElement("div");
+              n_div4.id = "extra_div_style_for_image1";
+              n_div4.style = `background:${this.defaultColors_edited.background1}`;
+
+              n_div4.appendChild(audio);
+              n_div4.appendChild(n_div2_pEl);
+              n_div3.appendChild(n_div4);
+
+              messages_N.appendChild(n_div3);
+            }
+
+            if (e_12 + 1 == allTypeOfMessagesTxtFormCollection.length) {
+              setTimeout(() => {
+                scroll_and_sound();
+              }, 100);
+            }
+          });
+        }
+      }
+    });
+
+    socket.on("leaved", (userID) => {
+      var temp_array_ofDel = [];
+      typing.innerHTML = "";
+
+      this.showCurrentUsers.forEach((it, i) => {
+        if (it.id != userID) {
+          temp_array_ofDel.push(it);
+        }
+
+        if (i + 1 == this.showCurrentUsers.length) {
+          this.showCurrentUsers = temp_array_ofDel;
+
+          var temp_array_ofDel_1 = [];
+          activeIds.forEach((it, i) => {
+            if (it != userID) {
+              temp_array_ofDel_1.push(it);
+            }
+
+            if (i + 1 == activeIds.length) {
+              activeIds = temp_array_ofDel_1;
+
+              var temp_array_ofDel_2 = [];
+              active_name_with_id.forEach((it, i) => {
+                if (it.id != userID) {
+                  temp_array_ofDel_2.push(it);
+                }
+
+                if (i + 1 == active_name_with_id.length) {
+                  active_name_with_id = temp_array_ofDel_2;
+
+                  var temp_array_ofDel_3 = [];
+                  showNames_and_ids.forEach((it, i) => {
+                    if (it.id != userID) {
+                      temp_array_ofDel_3.push(it);
+                    }
+
+                    if (i + 1 == showNames_and_ids.length) {
+                      showNames_and_ids = temp_array_ofDel_3;
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+
+      //image
+      if (this.sending_AN_IMG1.mby2 == userID) {
+        this.sending_AN_IMG = false;
+      }
+
+      //audio
+      if (this.sending_AN_AUDIO1.mby2 == userID) {
+        this.sending_AN_AUDIO = false;
+      }
+    });
+
+    socket.on("typing", (data) => {
+      if (data != null) {
+        if (matchDataName.length == 0) {
+          typing.innerHTML = `<p id="tp_ing" style="font-weight:500;color:${this.defaultColors_edited.text1}"><em>${data}</em> is tpying a message..</p>`;
+          matchDataName.push(data);
+        } else {
+          if (!matchDataName.includes(data)) {
+            typing.innerHTML += `<p id="tp_ing" style="font-weight:500;color:${this.defaultColors_edited.text1}"><em>${data}</em> is tpying a message..</p>`;
+            matchDataName.push(data);
+          }
+        }
+      } else {
+        typing.innerHTML = "";
+        matchDataName = [];
+      }
+
+      if (_direction == "down") {
+        typing.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+          inline: "nearest",
+        });
+      }
+    });
+
+    socket.on("typing_name", (data) => {
+      var tempArray_1 = [];
+
+      active_name_with_id.forEach((ac_ids, i) => {
+        if (ac_ids.id == data.userID1) {
+          var name_in_Ar_1 = {
+            name: data.userName,
+            id: data.userID1,
+          };
+
+          tempArray_1.push(name_in_Ar_1);
+        } else {
+          tempArray_1.push(ac_ids);
+        }
+
+        if (i + 1 == active_name_with_id.length) {
+          active_name_with_id = tempArray_1;
+          var tempArray_2 = [];
+
+          active_name_with_id.forEach((item, i) => {
+            if (item.name == null) {
+              tempArray_2.push({ showName: item.id, id: item.id });
+            } else {
+              tempArray_2.push({ showName: item.name, id: item.id });
+            }
+
+            if (i + 1 == active_name_with_id.length) {
+              showNames_and_ids = tempArray_2;
+
+              this.showCurrentUsers = showNames_and_ids;
+            }
+          });
+        }
+      });
+    });
+
+    socket.on("get_userNames", (data) => {
+      if (data.extra != null) {
+        if (data_with_null != null) {
+          var new_Array_temp = data_with_null.curr_usr;
+
+          this.showCurrentUsers = new_Array_temp;
+
+          var temp_array_for_showName_to_name = [];
+          this.showCurrentUsers.forEach((it, i) => {
+            temp_array_for_showName_to_name.push({
+              name: it.showName,
+              id: it.id,
+            });
+
+            if (i + 1 == this.showCurrentUsers.length) {
+              active_name_with_id = temp_array_for_showName_to_name;
+            }
+          });
+        }
+      } else {
+        data_with_null = data;
+      }
+    });
+
+    //send pictures
+    socket.on("clicked_send_img", ({ data1, data2 }) => {
+      this.sending_AN_IMG = data1;
+      this.sending_AN_IMG1 = data2;
+    });
+
+    //send audio
+    socket.on("clicked_send_audio", ({ data1, data2 }) => {
+      this.sending_AN_AUDIO = data1;
+      this.sending_AN_AUDIO1 = data2;
+
+      local_sending_AN_AUDIO = this.sending_AN_AUDIO;
+    });
+
+    //all type messages
+
+    socket.on("chat", ({ nameValue, messageValue, io_id }) => {
+      var inside_Show_dateFuc = (e) => {
+        if (io_id != userID1) {
+          var matchededio_ID = false;
+          this.showCurrentUsers.forEach((e_1, i_1) => {
+            if (e_1.id == io_id) {
+              matchededio_ID = true;
+              allTypeOfMessagesTxtFormCollection.push({
+                id: io_id,
+                message: messageValue,
+                type: "chat",
+                showName: e_1.showName,
+                date: new Date(),
+              });
+            }
+
+            if (i_1 + 1 == this.showCurrentUsers.length) {
+              if (matchededio_ID == false) {
+                allTypeOfMessagesTxtFormCollection.push({
+                  id: io_id,
+                  message: messageValue,
+                  type: "chat",
+                  showName: io_id,
+                  date: new Date(),
+                });
+              }
+            }
+          });
+
+          messages.innerHTML += `<div id="notme_Dv"><span style="color:${
+            this.defaultColors_edited.text1
+          }">${nameValue}</span> <div style="color:${
+            this.defaultColors_edited.text1
+          };background:${
+            this.defaultColors_edited.background1
+          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: ${e}; font-size: 14px;">${new Date()}</p></div></div>`;
+        } else {
+          allTypeOfMessagesTxtFormCollection.push({
+            id: userID1,
+            message: messageValue,
+            type: "chat",
+            showName:
+              document.getElementById("name").value ||
+              document.getElementById("name1").value,
+            date: new Date(),
+          });
+
+          messages.innerHTML += `<div id="me_Dv"><div style="color:${
+            this.defaultColors_edited.text
+          };background:${
+            this.defaultColors_edited.background
+          };"><pre>${messageValue}</pre><p class="show_date_p" style="display: ${e}; font-size: 14px;">${new Date()}</p></div></div>`;
+        }
+      };
+
+      if (this.show_date == false) {
+        //none
+        inside_Show_dateFuc("none");
+      } else {
+        //block
+        inside_Show_dateFuc("block");
+      }
+
+      typing.innerHTML = "";
+      matchDataName = [];
+
+      setTimeout(() => {
+        scroll_and_sound();
+      }, 100);
+    });
+
+    socket.on("getImage", ({ image, type, u_id, user_pic_Name }) => {
+      // create image with
+      if (type == "image/jpeg" || type == "image/png" || type == "image/jpg") {
+        var imgE1 = document.createElement("img");
+        imgE1.style = "width: 100%;";
+        imgE1.src = `${image}`;
+
+        var messages_N = document.querySelector("#messages");
+
+        //date node
+        var n_div2_pEl = document.createElement("p");
+        n_div2_pEl.setAttribute("class", "show_date_p");
+
+        if (this.show_date == false) {
+          n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
+        } else {
+          n_div2_pEl.setAttribute("style", "display:block;font-size:14px");
+        }
+
+        var dateTxtNode = document.createTextNode(new Date());
+        n_div2_pEl.appendChild(dateTxtNode);
+
+        if (u_id == userID1) {
+          allTypeOfMessagesTxtFormCollection.push({
+            id: userID1,
+            message: image,
+            type: "image",
+            showName:
+              document.getElementById("name").value ||
+              document.getElementById("name1").value,
+            date: new Date(),
+          });
+
+          socket.emit("clicked_send_img", {
+            data1: false,
+            data2: {
+              mby1:
+                document.querySelector("#name").value ||
+                document.querySelector("#name1").value,
+              mby2: userID1,
+            },
+          });
+
+          var n_div1 = document.createElement("div");
+          n_div1.id = "me_Dv";
+          var n_div2 = document.createElement("div");
+          n_div2.id = "extra_div_style_for_image";
+          n_div2.style = `background:${this.defaultColors_edited.background}`;
+
+          n_div2.appendChild(imgE1);
+          n_div2.appendChild(n_div2_pEl);
+          n_div1.appendChild(n_div2);
+
+          messages_N.appendChild(n_div1);
+
+          document.getElementById("fileinput").value = "";
+
+          if (var_hideHTML_1st_one == true) {
+            document
+              .querySelectorAll(".image_snd_btn")[1]
+              .classList.remove("image_send_d1");
+          } else {
+            document
+              .querySelectorAll(".image_snd_btn")[0]
+              .classList.remove("image_send_d1");
+          }
+        } else {
+          var matchededio_ID = false;
+          this.showCurrentUsers.forEach((e_1, i_1) => {
+            if (e_1.id == u_id) {
+              matchededio_ID = true;
+              allTypeOfMessagesTxtFormCollection.push({
+                id: u_id,
+                message: image,
+                type: "image",
+                showName: e_1.showName,
+                date: new Date(),
+              });
+            }
+
+            if (i_1 + 1 == this.showCurrentUsers.length) {
+              if (matchededio_ID == false) {
+                allTypeOfMessagesTxtFormCollection.push({
+                  id: u_id,
+                  message: image,
+                  type: "image",
+                  showName: u_id,
+                  date: new Date(),
+                });
+              }
+            }
+          });
+
+          var n_div3 = document.createElement("div");
+          n_div3.id = "notme_Dv";
+          var spn_1 = document.createElement("span");
+          var ckeck_var = user_pic_Name || u_id;
+
+          var txtNode = document.createTextNode(ckeck_var);
+
+          spn_1.appendChild(txtNode);
+          spn_1.style = `color:${this.defaultColors_edited.text1}`;
+
+          n_div3.appendChild(spn_1);
+
+          var n_div4 = document.createElement("div");
+          n_div4.id = "extra_div_style_for_image";
+          n_div4.style = `background:${this.defaultColors_edited.background1}`;
+
+          n_div4.appendChild(imgE1);
+          n_div4.appendChild(n_div2_pEl);
+          n_div3.appendChild(n_div4);
+
+          messages_N.appendChild(n_div3);
+        }
+
+        setTimeout(() => {
+          scroll_and_sound();
+        }, 100);
+      } else {
+        alert("Please insert a png or jpeg file!");
+      }
+    });
+
     socket.on("send_audio", ({ dataArray, u_id, user_pic_Name }) => {
       var blob1 = new Blob(dataArray, { type: "audio/mp3;" });
 
@@ -1345,8 +1575,6 @@ const app = {
       audio.src = blobURL1;
       audio.style = "max-width:100%";
       audio.controls = "controls";
-
-      //document.body.appendChild(audio);
 
       //---------------------------------
       var messages_N = document.querySelector("#messages");
@@ -1364,6 +1592,16 @@ const app = {
       n_div2_pEl.appendChild(dateTxtNode);
 
       if (u_id == userID1) {
+        allTypeOfMessagesTxtFormCollection.push({
+          id: userID1,
+          message: dataArray,
+          type: "audio",
+          showName:
+            document.getElementById("name").value ||
+            document.getElementById("name1").value,
+          date: new Date(),
+        });
+
         //clicked_send_audio
         this.sending_AN_AUDIO = false;
         local_sending_AN_AUDIO = false;
@@ -1400,6 +1638,32 @@ const app = {
 
         messages_N.appendChild(n_div1);
       } else {
+        var matchededio_ID = false;
+        this.showCurrentUsers.forEach((e_1, i_1) => {
+          if (e_1.id == u_id) {
+            matchededio_ID = true;
+            allTypeOfMessagesTxtFormCollection.push({
+              id: u_id,
+              message: dataArray,
+              type: "audio",
+              showName: e_1.showName,
+              date: new Date(),
+            });
+          }
+
+          if (i_1 + 1 == this.showCurrentUsers.length) {
+            if (matchededio_ID == false) {
+              allTypeOfMessagesTxtFormCollection.push({
+                id: u_id,
+                message: dataArray,
+                type: "audio",
+                showName: u_id,
+                date: new Date(),
+              });
+            }
+          }
+        });
+
         var n_div3 = document.createElement("div");
         n_div3.id = "notme_Dv";
         var spn_1 = document.createElement("span");

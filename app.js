@@ -73,6 +73,25 @@ io.on("connection", (socket) => {
     });
 
     //-------------------------------------
+    //sendMeChattings
+    socket.on("sendMeChattings", (data) => {
+      io.to(roomId).emit("sendMeChattings", data);
+    });
+
+    //okSendingChattings
+    socket.on("okSendingChattings", (data) => {
+      io.to(roomId).emit("okSendingChattings", data);
+    });
+
+    //getRealDatabase
+    socket.on("getRealDatabase", (data) => {
+      socket.to(roomId).broadcast.emit("getRealDatabase", data);
+    });
+
+    //okgettingRealDatabase
+    socket.on("okgettingRealDatabase", (data) => {
+      socket.to(roomId).broadcast.emit("okgettingRealDatabase", data);
+    });
   });
 });
 

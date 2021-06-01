@@ -869,11 +869,6 @@ const app = {
       };
 
       window.addEventListener(
-        "touchstart",
-        commonMouseDownEventForDeleteAndCopyPerpouse
-      );
-
-      window.addEventListener(
         "mousedown",
         commonMouseDownEventForDeleteAndCopyPerpouse
       );

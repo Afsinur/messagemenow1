@@ -471,8 +471,8 @@ const app = {
 
     e_Current_common_button_press() {
       setTimeout(() => {
-        this.isTextTrueorFalseCon = false;
-      }, 100);
+        //this.isTextTrueorFalseCon = false;
+      }, 10);
     },
 
     e_CurrentCPY(elm1) {
@@ -704,6 +704,18 @@ const app = {
             "btnStartContainerDiv"
           );
 
+        //copy or remove div
+        //side_bar
+        if (
+          e.target.parentNode.className == "commonCpyRmv" ||
+          e.target.id == "isTextTrueorFalse" ||
+          e.target.className == "commonCpyRmv"
+        ) {
+          this.isTextTrueorFalseCon = true;
+        } else {
+          this.isTextTrueorFalseCon = false;
+        }
+
         //sidebar
         if (
           e.target != side_bar_javascript &&
@@ -836,18 +848,6 @@ const app = {
       };
 
       var commonMouseDownEventForDeleteAndCopyPerpouse = (e) => {
-        //copy or remove div
-        //side_bar
-        if (
-          e.target.parentNode.className == "commonCpyRmv" ||
-          e.target.id == "isTextTrueorFalse" ||
-          e.target.className == "commonCpyRmv"
-        ) {
-          this.isTextTrueorFalseCon = true;
-        } else {
-          this.isTextTrueorFalseCon = false;
-        }
-
         if (
           e.target.parentNode.parentNode.id == "messages" ||
           e.target.parentNode.parentNode.id == "notme_Dv" ||
@@ -1733,8 +1733,10 @@ const app = {
             var curtShowNm;
             var slicedMessage;
 
-            this.youAreRPLY_ing = false;
-            this_youAreRPLY_ing = false;
+            if (io_id == userID1) {
+              this.youAreRPLY_ing = false;
+              this_youAreRPLY_ing = false;
+            }
 
             if (
               allTypeOfMessagesTxtFormCollection[current_eFOR_RPLY].showName !=

@@ -469,7 +469,15 @@ const app = {
       })();
     },
 
+    e_Current_common_button_press() {
+      setTimeout(() => {
+        this.isTextTrueorFalseCon = false;
+      }, 100);
+    },
+
     e_CurrentCPY(elm1) {
+      this.e_Current_common_button_press();
+
       for (let index = 0; index < elm1.length; index++) {
         const element12 = elm1[index];
         if (element12.nodeName == "PRE") {
@@ -491,6 +499,8 @@ const app = {
     },
 
     e_CurrentRMV(e, e1) {
+      this.e_Current_common_button_press();
+
       socket.emit("removeAmessage", e);
 
       var newArrayAllColl = [];
@@ -509,6 +519,8 @@ const app = {
     },
 
     e_CurrentRPLY(e) {
+      this.e_Current_common_button_press();
+
       var PRLYto = {};
 
       var slicedMessage = `${allTypeOfMessagesTxtFormCollection[

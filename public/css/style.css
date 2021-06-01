@@ -182,6 +182,7 @@ ul {
   align-self: flex-end;
   display: flex;
   flex-direction: row-reverse;
+  user-select: none;
 }
 
 #me_Dv div {
@@ -192,7 +193,7 @@ ul {
   margin: 10px;
   max-width: 80%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
@@ -201,6 +202,7 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
+  user-select: none;
 }
 
 #notme_Dv div {
@@ -212,7 +214,7 @@ ul {
   align-self: flex-start;
   max-width: 80%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
@@ -528,6 +530,94 @@ input[type="color"] {
   border-radius: 50%;
   transition: transform 150ms ease-in-out;
   animation: sending_prev_data 800ms forwards infinite;
+}
+
+/*isTextTrueorFalse*/
+#isTextTrueorFalse {
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 15px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+}
+
+#isTextTrueorFalse > div {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+#isTextTrueorFalse > div > button {
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background 150ms ease-in-out;
+}
+
+#isTextTrueorFalse > div > button:hover {
+  background: #b3b2b2;
+}
+
+/*replying*/
+#replying {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#replying > div {
+  position: relative;
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+#replying > div > p {
+  font-weight: 500;
+  color: #ffffff;
+  padding: 2px;
+}
+
+#replying > div:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+#replying > div:last-child {
+  justify-content: center;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#replying > div:last-child > p:first-child {
+  position: relative;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f00;
+  transition: all 150ms ease-in-out;
+  cursor: pointer;
+  user-select: none;
+  line-height: 10px;
+}
+
+#replying > div:last-child > p:first-child:hover {
+  background-color: rgb(179, 31, 31);
 }
 
 /*keyframes*/

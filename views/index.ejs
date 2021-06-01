@@ -21,6 +21,35 @@
             <div id="msg_Div">
               <div id="messages"></div>
 
+              <div id="replying" v-show="youAreRPLY_ing">
+                <div>
+                  <p>
+                    reply to <em>{{ rplyVUEtxts.name }}</em>
+                  </p>
+
+                  <p v-show="rplyVUEtxts.type == 'chat'">
+                    {{ rplyVUEtxts.message }}
+                  </p>
+
+                  <img
+                    style="width: 50px"
+                    v-show="rplyVUEtxts.type == 'image'"
+                    :src="rplyVUEtxts.message"
+                  />
+
+                  <audio
+                    style="max-width: 250px"
+                    v-show="rplyVUEtxts.type == 'audio'"
+                    :src="rplyVUEtxts.message"
+                    controls
+                  ></audio>
+                </div>
+
+                <div>
+                  <p @click="e_closeRPLY(current_eFOR_RPLY)">&#10006;</p>
+                </div>
+              </div>
+
               <div id="typing"></div>
             </div>
 
@@ -496,29 +525,39 @@
               </div>
             </div>
           </div>
-
-          <!--<div id="header1">
-            <button @click="copyToClipboard">Copy URL</button>
-          </div>
-
-          <div id="current_users1">
-            <h2>
-              Active Now
-              <span id="total_active">{{ showCurrentUsers.length }}</span>
-            </h2>
-
-            <ul id="current_users1_ul">
-              <li v-for="(item, index) in showCurrentUsers" :key="index">
-                {{ item.showName }}
-              </li>
-            </ul>
-          </div>
-          -->
         </div>
       </div>
 
       <div id="preLoader1" v-show="processing_Prev_users_chats">
         <div></div>
+      </div>
+
+      <div id="isTextTrueorFalse" v-show="isTextTrueorFalseCon">
+        <div class="commonCpyRmv" v-show="isTextTrue && isTextTrue!=null">
+          <button
+            v-show="RemovemE"
+            @click="e_CurrentRMV(current_eFOR_RMV, current_eFOR_RMV1)"
+          >
+            Remove
+          </button>
+
+          <button
+            v-show="isCpyTrue && isCpyTrue!=null"
+            @click="e_CurrentCPY(current_eFOR_cpy)"
+          >
+            Copy
+          </button>
+
+          <button @click="e_CurrentRPLY(current_eFOR_RPLY)">Reply</button>
+        </div>
+
+        <div class="commonCpyRmv" v-show="!isTextTrue && isTextTrue!=null">
+          <button @click="e_CurrentRMV(current_eFOR_RMV, current_eFOR_RMV1)">
+            Remove
+          </button>
+
+          <button @click="e_CurrentRPLY(current_eFOR_RPLY)">Reply</button>
+        </div>
       </div>
     </div>
 

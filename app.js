@@ -53,14 +53,18 @@ io.on("connection", (socket) => {
     });
 
     //-------------------------------------
-    socket.on("image", ({ image, type, u_id, user_pic_Name, fileName }) => {
-      io.to(roomId).emit("getImage", {
-        image: image.toString("binary"),
-        type,
-        u_id,
-        user_pic_Name,
-      });
-    });
+    socket.on(
+      "image",
+      ({ image, type, u_id, user_pic_Name, current_eFOR_RPLY }) => {
+        io.to(roomId).emit("getImage", {
+          image: image.toString("binary"),
+          type,
+          u_id,
+          user_pic_Name,
+          current_eFOR_RPLY,
+        });
+      }
+    );
 
     //clicked_send_img
     socket.on("clicked_send_img", (data) => {
@@ -91,6 +95,11 @@ io.on("connection", (socket) => {
     //okgettingRealDatabase
     socket.on("okgettingRealDatabase", (data) => {
       socket.to(roomId).broadcast.emit("okgettingRealDatabase", data);
+    });
+
+    //removeAmessage
+    socket.on("removeAmessage", (data) => {
+      socket.to(roomId).broadcast.emit("removeAmessage", data);
     });
   });
 });

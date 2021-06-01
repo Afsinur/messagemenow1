@@ -865,11 +865,11 @@ const app = {
               }
             }
           }
-        }, 400);
+        }, 100);
       };
 
       window.addEventListener(
-        "mousedown",
+        "click",
         commonMouseDownEventForDeleteAndCopyPerpouse
       );
 

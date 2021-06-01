@@ -576,8 +576,6 @@ const app = {
       var _top = chatContainer.scrollTop;
       var local_sending_AN_AUDIO = false;
       var forResizeAgain_voice;
-      var selectEnd = 0;
-      var selectEndSetInt;
 
       //some window resize functions
       this.hideHTML_1st_one = var_hideHTML_1st_one;
@@ -693,9 +691,6 @@ const app = {
           btnStartContainerDiv = document.getElementById(
             "btnStartContainerDiv"
           );
-
-        //for Copy and remove
-        clearInterval(selectEndSetInt);
 
         //sidebar
         if (
@@ -841,31 +836,23 @@ const app = {
           this.isTextTrueorFalseCon = false;
         }
 
-        selectEndSetInt = setInterval(() => {
-          selectEnd++;
-
-          if (selectEnd > 2) {
-            clearInterval(selectEndSetInt);
-
-            if (
-              e.target.parentNode.parentNode.id == "messages" ||
-              e.target.parentNode.parentNode.id == "notme_Dv" ||
-              e.target.parentNode.parentNode.id == "me_Dv"
-            ) {
-              if (
-                e.target.parentNode.id == "notme_Dv" ||
-                e.target.parentNode.parentNode.id == "notme_Dv"
-              ) {
-                commonEventHandlerFunc(e, "notme_Dv", "notme_Dv");
-              } else if (
-                e.target.parentNode.id == "me_Dv" ||
-                e.target.parentNode.parentNode.id == "me_Dv"
-              ) {
-                commonEventHandlerFunc(e, "me_Dv", "me_Dv");
-              }
-            }
+        if (
+          e.target.parentNode.parentNode.id == "messages" ||
+          e.target.parentNode.parentNode.id == "notme_Dv" ||
+          e.target.parentNode.parentNode.id == "me_Dv"
+        ) {
+          if (
+            e.target.parentNode.id == "notme_Dv" ||
+            e.target.parentNode.parentNode.id == "notme_Dv"
+          ) {
+            commonEventHandlerFunc(e, "notme_Dv", "notme_Dv");
+          } else if (
+            e.target.parentNode.id == "me_Dv" ||
+            e.target.parentNode.parentNode.id == "me_Dv"
+          ) {
+            commonEventHandlerFunc(e, "me_Dv", "me_Dv");
           }
-        }, 100);
+        }
       };
 
       window.addEventListener(
@@ -1735,6 +1722,7 @@ const app = {
             var slicedMessage;
 
             this.youAreRPLY_ing = false;
+            this_youAreRPLY_ing = false;
 
             if (
               allTypeOfMessagesTxtFormCollection[current_eFOR_RPLY].showName !=
@@ -1926,6 +1914,7 @@ const app = {
           if (current_eFOR_RPLY != undefined) {
             if (u_id == userID1) {
               this.youAreRPLY_ing = false;
+              this_youAreRPLY_ing = false;
             }
 
             if (
@@ -2134,6 +2123,7 @@ const app = {
           if (current_eFOR_RPLY != undefined) {
             if (u_id == userID1) {
               this.youAreRPLY_ing = false;
+              this_youAreRPLY_ing = false;
             }
 
             if (

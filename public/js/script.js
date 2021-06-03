@@ -83,6 +83,7 @@ const app = {
   methods: {
     send_click(e, e1) {
       document.getElementById("message").style.minHeight = "7vh";
+      document.getElementById("send").classList.add("image_send_d1");
 
       var io_id = userID1;
       var nameValue = e || io_id,
@@ -1820,6 +1821,10 @@ const app = {
                   d.getMonth() + 1
                 }/${d.getDate()} | ${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}(${d.getMilliseconds()})</p></div></div>`;
               } else {
+                document
+                  .getElementById("send")
+                  .classList.remove("image_send_d1");
+
                 var showNameValues1 =
                   document.getElementById("name").value ||
                   document.getElementById("name1").value;
@@ -1884,6 +1889,10 @@ const app = {
                   d.getMonth() + 1
                 }/${d.getDate()} | ${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}(${d.getMilliseconds()})</p></div></div>`;
               } else {
+                document
+                  .getElementById("send")
+                  .classList.remove("image_send_d1");
+
                 var showNameValues1 =
                   document.getElementById("name").value ||
                   document.getElementById("name1").value;

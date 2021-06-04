@@ -54,17 +54,17 @@ const app = {
       show_date_p: false,
       defaultColors: {
         text: "#ffffff",
-        background: "#2960f9",
+        background: "#507cf7",
         text1: "#303030",
-        background1: "#ffffff",
-        chatbox: "#a4a6e8",
+        background1: "#d9d9d9",
+        chatbox: "#ededed",
       },
       defaultColors_edited: {
         text: "#ffffff",
-        background: "#2960f9",
+        background: "#507cf7",
         text1: "#303030",
-        background1: "#ffffff",
-        chatbox: "#a4a6e8",
+        background1: "#d9d9d9",
+        chatbox: "#ededed",
       },
       processing_Prev_users_chats: true,
       isTextTrue: null,
@@ -422,10 +422,10 @@ const app = {
     setDefaultColor() {
       var newResetClone1 = {
         text: "#ffffff",
-        background: "#2960f9",
+        background: "#507cf7",
         text1: "#303030",
-        background1: "#ffffff",
-        chatbox: "#a4a6e8",
+        background1: "#d9d9d9",
+        chatbox: "#ededed",
       };
 
       this.defaultColors_edited = newResetClone1;

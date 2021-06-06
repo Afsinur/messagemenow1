@@ -2198,16 +2198,24 @@ const app = {
             var n_div2_pEl = document.createElement("p");
             n_div2_pEl.setAttribute("class", "show_date_p");
 
+            var cmncmncolorSet = (e_d) => {
+              if (u_id == userID1) {
+                n_div2_pEl.setAttribute(
+                  "style",
+                  `display:${e_d};font-size:14px;`
+                );
+              } else {
+                n_div2_pEl.setAttribute(
+                  "style",
+                  `display:${e_d};font-size:14px;`
+                );
+              }
+            };
+
             if (this.show_date == false) {
-              n_div2_pEl.setAttribute(
-                "style",
-                `display:none;font-size:14px;color:${this.defaultColors_edited.text}`
-              );
+              cmncmncolorSet("none");
             } else {
-              n_div2_pEl.setAttribute(
-                "style",
-                `display:block;font-size:14px;color:${this.defaultColors_edited.text}`
-              );
+              cmncmncolorSet("block");
             }
 
             var dateTxtNode = document.createTextNode(
@@ -2238,7 +2246,7 @@ const app = {
               n_div1.id = "me_Dv";
               var n_div2 = document.createElement("div");
               n_div2.id = "extra_div_style_for_image";
-              n_div2.style = `background:${this.defaultColors_edited.background}`;
+              n_div2.style = `background:${this.defaultColors_edited.background};color:${this.defaultColors_edited.text};`;
 
               if (current_eFOR_RPLY != undefined) {
                 n_div2.innerHTML += adtextandMore;
@@ -2299,7 +2307,7 @@ const app = {
 
               var n_div4 = document.createElement("div");
               n_div4.id = "extra_div_style_for_image";
-              n_div4.style = `background:${this.defaultColors_edited.background1}`;
+              n_div4.style = `background:${this.defaultColors_edited.background1};color:${this.defaultColors_edited.text1};`;
 
               if (current_eFOR_RPLY != undefined) {
                 n_div4.innerHTML += adtextandMore;
@@ -2415,16 +2423,24 @@ const app = {
             var n_div2_pEl = document.createElement("p");
             n_div2_pEl.setAttribute("class", "show_date_p");
 
+            var cmncmncolorSet = (e_d) => {
+              if (u_id == userID1) {
+                n_div2_pEl.setAttribute(
+                  "style",
+                  `display:${e_d};font-size:14px;`
+                );
+              } else {
+                n_div2_pEl.setAttribute(
+                  "style",
+                  `display:${e_d};font-size:14px;`
+                );
+              }
+            };
+
             if (this.show_date == false) {
-              n_div2_pEl.setAttribute(
-                "style",
-                `display:none;font-size:14px;color:${this.defaultColors_edited.text}`
-              );
+              cmncmncolorSet("none");
             } else {
-              n_div2_pEl.setAttribute(
-                "style",
-                `display:block;font-size:14px;color:${this.defaultColors_edited.text}`
-              );
+              cmncmncolorSet("block");
             }
 
             var dateTxtNode = document.createTextNode(
@@ -2470,7 +2486,7 @@ const app = {
               n_div1.id = "me_Dv";
               var n_div2 = document.createElement("div");
               n_div2.id = "extra_div_style_for_image1";
-              n_div2.style = `background:${this.defaultColors_edited.background}`;
+              n_div2.style = `background:${this.defaultColors_edited.background};color:${this.defaultColors_edited.text};`;
 
               if (current_eFOR_RPLY != undefined) {
                 n_div2.innerHTML += adtextandMore;
@@ -2520,7 +2536,7 @@ const app = {
 
               var n_div4 = document.createElement("div");
               n_div4.id = "extra_div_style_for_image1";
-              n_div4.style = `background:${this.defaultColors_edited.background1}`;
+              n_div4.style = `background:${this.defaultColors_edited.background1};color:${this.defaultColors_edited.text1};`;
 
               if (current_eFOR_RPLY != undefined) {
                 n_div4.innerHTML += adtextandMore;

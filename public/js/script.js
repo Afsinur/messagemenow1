@@ -587,10 +587,10 @@ const app = {
         display: flex;
         flex-wrap: wrap;
         width: 90%;
-        heigth: 80vh;
+        min-height: 75%;
         flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-start;
+        align-items: center;
+        justify-content: center;
         padding: 15px;
         border-radius: 5px;
         background: #ededed;
@@ -607,7 +607,7 @@ const app = {
       }
 
       #loadAgnAndAgn ul li{
-        margin-left: 5px;
+        margin: 5px;
       }
       
       #loadAgnAndAgn div input {

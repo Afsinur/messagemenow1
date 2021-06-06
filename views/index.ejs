@@ -559,6 +559,48 @@
           <button @click="e_CurrentRPLY(current_eFOR_RPLY)">Reply</button>
         </div>
       </div>
+
+      <div id="loadAgnAndAgn">
+        <div class="under_loadAgnAndAgn">
+          <h3>Promise Note</h3>
+
+          <div>
+            <b>I promise to Allah that,</b>
+            <ul>
+              <li>
+                I will not add any
+                <span class="pointerCur" title="Non-mahram in Islam"
+                  ><u>non-mahram</u></span
+                >(in Islam) in this group.
+              </li>
+
+              <li>
+                I will not enter in this group if I am a
+                <span class="pointerCur" title="Non-mahram in Islam"
+                  ><u>non-mahram</u></span
+                >(in Islam).
+              </li>
+
+              <li>
+                I will not exchange any multimedia message that is not permitted
+                by Allah.
+              </li>
+            </ul>
+          </div>
+
+          <label for="acceptCon"
+            ><input
+              type="checkbox"
+              id="acceptCon"
+              onchange="acceptConFunc()"
+            />Accept</label
+          >
+
+          <button id="acceptConBtn" onclick="acceptConBtnFunc(true)" disabled>
+            Accept
+          </button>
+        </div>
+      </div>
     </div>
 
     <div id="dyn_img">

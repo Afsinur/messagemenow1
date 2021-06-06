@@ -14,6 +14,8 @@ var _direction,
   this_youAreRPLY_ing = false,
   this_current_eFOR_RPLY;
 
+var acceptConBtnFunc, acceptConFunc;
+
 //-----------------------------
 
 var resizeIfRisized = () => {
@@ -470,15 +472,7 @@ const app = {
       })();
     },
 
-    e_Current_common_button_press() {
-      setTimeout(() => {
-        //this.isTextTrueorFalseCon = false;
-      }, 10);
-    },
-
     e_CurrentCPY(elm1) {
-      this.e_Current_common_button_press();
-
       for (let index = 0; index < elm1.length; index++) {
         const element12 = elm1[index];
         if (element12.nodeName == "PRE") {
@@ -500,8 +494,6 @@ const app = {
     },
 
     e_CurrentRMV(e, e1) {
-      this.e_Current_common_button_press();
-
       socket.emit("removeAmessage", e);
 
       var newArrayAllColl = [];
@@ -520,7 +512,7 @@ const app = {
     },
 
     e_CurrentRPLY(e) {
-      this.e_Current_common_button_press();
+      document.getElementById("message").focus();
 
       var PRLYto = {};
 
@@ -571,6 +563,192 @@ const app = {
 
     e_closeRPLY(e) {
       this.youAreRPLY_ing = false;
+    },
+
+    inerValCkForagr() {
+      var st1Txt = `
+      /*loadAgnAndAgn*/
+      #loadAgnAndAgn {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 4;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      #loadAgnAndAgn div {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 90%;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 15px;
+        border-radius: 5px;
+        background: #ededed;
+        user-select: none;
+      }      
+      
+      #loadAgnAndAgn div :is(h3, p, label, button) {
+        margin: 5px 0;
+        max-width: 90%;        
+      }
+
+      #loadAgnAndAgn span.pointerCur{
+        cursor: pointer;
+      }
+
+      #loadAgnAndAgn ul li{
+        margin-left: 5px;
+      }
+      
+      #loadAgnAndAgn div input {
+        margin-right: 5px;
+      }
+      
+      #loadAgnAndAgn div button {
+        align-self: flex-end;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background: #2960f9;
+        color: #fff;
+        cursor: pointer;
+        transition: background 150ms ease-in-out;
+      }
+      
+      #loadAgnAndAgn div button:hover {
+        background: #183b99;
+      }
+      
+      #loadAgnAndAgn div button:disabled {
+        background: #273f80;
+        color: #dedede;
+        cursor: default;
+      }
+      /*------------------*/      
+      `;
+      var st1 = document.createElement("style");
+      st1.appendChild(document.createTextNode(st1Txt));
+
+      var changed = true;
+
+      var commonDostyleFunc = () => {
+        document.getElementsByTagName("head")[0].appendChild(st1);
+
+        changed = true;
+      };
+
+      commonDostyleFunc();
+
+      var inervaled1 = setInterval(() => {
+        var loadAgnAndAgn = document.getElementById("loadAgnAndAgn");
+        var loadAgnAndAgn1 = document.querySelector(
+          "#loadAgnAndAgn .under_loadAgnAndAgn div"
+        );
+
+        document.getElementsByTagName("head")[0].appendChild(st1);
+
+        var dataTxt1 = `
+        <div class="under_loadAgnAndAgn">
+         <h3>Promise Note</h3>
+
+         <div>
+            <b>I promise to Allah that,</b>
+            <ul>
+              <li>
+                I will not add any
+                <span class="pointerCur" title="Non-mahram in Islam"
+                  ><u>non-mahram</u></span
+                >(in Islam) in this group.
+              </li>
+
+              <li>
+                I will not enter in this group if I am a
+                <span class="pointerCur" title="Non-mahram in Islam"
+                  ><u>non-mahram</u></span
+                >(in Islam).
+              </li>
+
+              <li>
+                I will not exchange any multimedia message that is not permitted
+                by Allah.
+              </li>
+            </ul>
+          </div>
+
+         <label for="acceptCon"
+          ><input
+            type="checkbox"
+            id="acceptCon"
+            onchange="acceptConFunc()"
+          />Accept</label
+         >
+
+         <button id="acceptConBtn" onclick="acceptConBtnFunc(true)" disabled>
+           Accept
+         </button>
+        </div>
+        `;
+
+        var dataTxt2 = `
+         <b>I promise to Allah that,</b>
+         <ul>
+           <li> I will not add any <span class="pointerCur" title="Non-mahram in Islam"><u>non-mahram</u></span>(in Islam) in this group.</li>              
+         
+           <li> I will not enter in this group if I am a <span class="pointerCur" title="Non-mahram in Islam"><u>non-mahram</u></span>(in Islam).</li>              
+         
+           <li> I will not exchange any multimedia message that is not permitted by Allah.</li> 
+         </ul>
+        `;
+
+        var cmn_in_null = () => {
+          var crtElmnt1 = document.createElement("div");
+          crtElmnt1.id = "loadAgnAndAgn";
+          crtElmnt1.innerHTML = dataTxt1;
+
+          document.getElementById("app").appendChild(crtElmnt1);
+
+          commonDostyleFunc();
+        };
+
+        if (loadAgnAndAgn == null) {
+          cmn_in_null();
+        } else {
+          if (loadAgnAndAgn1 != null) {
+            loadAgnAndAgn1.innerHTML = dataTxt2;
+          } else {
+            window.location.reload();
+          }
+        }
+      }, 1000);
+
+      acceptConBtnFunc = (e) => {
+        if (e == true) {
+          document.getElementById("loadAgnAndAgn").style.display = "none";
+
+          clearInterval(inervaled1);
+        }
+      };
+
+      acceptConFunc = () => {
+        if (changed == true) {
+          document.getElementById("acceptConBtn").removeAttribute("disabled");
+
+          changed = false;
+        } else {
+          document.getElementById("acceptConBtn").setAttribute("disabled", "");
+
+          changed = true;
+        }
+      };
     },
 
     E_after_Load() {
@@ -2352,6 +2530,7 @@ const app = {
   },
 
   mounted() {
+    this.inerValCkForagr();
     this.E_after_Load();
   },
 };

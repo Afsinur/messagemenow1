@@ -21,7 +21,7 @@ ul {
   list-style: none;
 }
 
-div#messages p {
+div#messages p:first-child {
   margin-bottom: 10px !important;
   padding: 5px;
   background-color: rgba(0, 0, 0, 0.15) !important;

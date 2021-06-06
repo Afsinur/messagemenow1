@@ -563,6 +563,7 @@ const app = {
 
     e_closeRPLY(e) {
       this.youAreRPLY_ing = false;
+      this_youAreRPLY_ing = this.youAreRPLY_ing;
     },
 
     inerValCkForagr() {

@@ -2199,9 +2199,15 @@ const app = {
             n_div2_pEl.setAttribute("class", "show_date_p");
 
             if (this.show_date == false) {
-              n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
+              n_div2_pEl.setAttribute(
+                "style",
+                `display:none;font-size:14px;color:${this.defaultColors_edited.text}`
+              );
             } else {
-              n_div2_pEl.setAttribute("style", "display:block;font-size:14px");
+              n_div2_pEl.setAttribute(
+                "style",
+                `display:block;font-size:14px;color:${this.defaultColors_edited.text}`
+              );
             }
 
             var dateTxtNode = document.createTextNode(
@@ -2410,9 +2416,15 @@ const app = {
             n_div2_pEl.setAttribute("class", "show_date_p");
 
             if (this.show_date == false) {
-              n_div2_pEl.setAttribute("style", "display:none;font-size:14px");
+              n_div2_pEl.setAttribute(
+                "style",
+                `display:none;font-size:14px;color:${this.defaultColors_edited.text}`
+              );
             } else {
-              n_div2_pEl.setAttribute("style", "display:block;font-size:14px");
+              n_div2_pEl.setAttribute(
+                "style",
+                `display:block;font-size:14px;color:${this.defaultColors_edited.text}`
+              );
             }
 
             var dateTxtNode = document.createTextNode(

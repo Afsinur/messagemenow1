@@ -54,16 +54,9 @@ const app = {
       currentVoiceSendAnimation: null,
       show_date: false,
       show_date_p: false,
-      defaultColors: {
-        text: "#ffffff",
-        background: "#507cf7",
-        text1: "#303030",
-        background1: "#d9d9d9",
-        chatbox: "#ededed",
-      },
       defaultColors_edited: {
         text: "#ffffff",
-        background: "#507cf7",
+        background: "#0084ff",
         text1: "#303030",
         background1: "#d9d9d9",
         chatbox: "#ededed",
@@ -421,55 +414,106 @@ const app = {
       }
     },
 
-    setDefaultColor() {
-      var newResetClone1 = {
-        text: "#ffffff",
-        background: "#507cf7",
-        text1: "#303030",
-        background1: "#d9d9d9",
-        chatbox: "#ededed",
-      };
+    setDefaultColor(e) {
+      if (e == 1) {
+        var newResetClone1 = {
+          text: "#ffffff",
+          background: "#0084ff",
+          text1: "#303030",
+          background1: "#d9d9d9",
+          chatbox: "#ededed",
+        };
 
-      this.defaultColors_edited = newResetClone1;
+        this.defaultColors_edited = newResetClone1;
 
-      document.querySelector(`#messages`).parentNode.style.background =
-        this.defaultColors_edited.chatbox;
+        document.querySelector(`#messages`).parentNode.style.background =
+          this.defaultColors_edited.chatbox;
 
-      (() => {
-        var new_loop_arr = [1, 2, 3, 4];
-        new_loop_arr.forEach((e1) => {
-          //chats color and background
-          for (
-            let index = 0;
-            index < document.querySelector(`#messages`).children.length;
-            index++
-          ) {
-            const element1 =
-              document.querySelector(`#messages`).children[index];
+        (() => {
+          var new_loop_arr = [1, 2, 3, 4];
+          new_loop_arr.forEach((e1) => {
+            //chats color and background
+            for (
+              let index = 0;
+              index < document.querySelector(`#messages`).children.length;
+              index++
+            ) {
+              const element1 =
+                document.querySelector(`#messages`).children[index];
 
-            for (let index = 0; index < element1.children.length; index++) {
-              const element2 = element1.children[index];
+              for (let index = 0; index < element1.children.length; index++) {
+                const element2 = element1.children[index];
 
-              //element2.children.length != 0
-              if (element2.parentNode.id == "me_Dv" && e1 == 1) {
-                element2.style.color = this.defaultColors_edited.text;
-              } else if (element2.parentNode.id == "me_Dv" && e1 == 2) {
-                element2.style.background =
-                  this.defaultColors_edited.background;
-              } else if (element2.parentNode.id == "notme_Dv" && e1 == 3) {
-                element2.style.color = this.defaultColors_edited.text1;
-              } else if (
-                element2.parentNode.id == "notme_Dv" &&
-                e1 == 4 &&
-                element2.children.length != 0
-              ) {
-                element2.style.background =
-                  this.defaultColors_edited.background1;
+                //element2.children.length != 0
+                if (element2.parentNode.id == "me_Dv" && e1 == 1) {
+                  element2.style.color = this.defaultColors_edited.text;
+                } else if (element2.parentNode.id == "me_Dv" && e1 == 2) {
+                  element2.style.background =
+                    this.defaultColors_edited.background;
+                } else if (element2.parentNode.id == "notme_Dv" && e1 == 3) {
+                  element2.style.color = this.defaultColors_edited.text1;
+                } else if (
+                  element2.parentNode.id == "notme_Dv" &&
+                  e1 == 4 &&
+                  element2.children.length != 0
+                ) {
+                  element2.style.background =
+                    this.defaultColors_edited.background1;
+                }
               }
             }
-          }
-        });
-      })();
+          });
+        })();
+      } else {
+        var newResetClone1 = {
+          text: "#ffffff",
+          background: "#0084ff",
+          text1: "#e8e8e8",
+          background1: "#3e4042",
+          chatbox: "#242526",
+        };
+
+        this.defaultColors_edited = newResetClone1;
+
+        document.querySelector(`#messages`).parentNode.style.background =
+          this.defaultColors_edited.chatbox;
+
+        (() => {
+          var new_loop_arr = [1, 2, 3, 4];
+          new_loop_arr.forEach((e1) => {
+            //chats color and background
+            for (
+              let index = 0;
+              index < document.querySelector(`#messages`).children.length;
+              index++
+            ) {
+              const element1 =
+                document.querySelector(`#messages`).children[index];
+
+              for (let index = 0; index < element1.children.length; index++) {
+                const element2 = element1.children[index];
+
+                //element2.children.length != 0
+                if (element2.parentNode.id == "me_Dv" && e1 == 1) {
+                  element2.style.color = this.defaultColors_edited.text;
+                } else if (element2.parentNode.id == "me_Dv" && e1 == 2) {
+                  element2.style.background =
+                    this.defaultColors_edited.background;
+                } else if (element2.parentNode.id == "notme_Dv" && e1 == 3) {
+                  element2.style.color = this.defaultColors_edited.text1;
+                } else if (
+                  element2.parentNode.id == "notme_Dv" &&
+                  e1 == 4 &&
+                  element2.children.length != 0
+                ) {
+                  element2.style.background =
+                    this.defaultColors_edited.background1;
+                }
+              }
+            }
+          });
+        })();
+      }
     },
 
     e_CurrentCPY(elm1) {

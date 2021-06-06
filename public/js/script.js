@@ -574,7 +574,7 @@ const app = {
         left: 0;
         height: 100vh;
         width: 100%;
-        background: rgba(0, 0, 0, 0.35);
+        background: rgba(0, 0, 0, 0.8);
         z-index: 4;
         display: flex;
         flex-direction: row;
@@ -591,15 +591,41 @@ const app = {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 15px;
+        align-content: center;
         border-radius: 5px;
         background: #ededed;
         user-select: none;
       }      
+
+      #loadAgnAndAgn div :is(h3){
+        position: absolute;
+        flex-grow: 1;
+        top: 0;
+        left: 0;
+        text-align: left;
+        padding: 10px;
+        background: royalblue;
+        color: #fff;
+        font-weight: 500;
+        border-top-left-radius: 5px;
+      }
       
-      #loadAgnAndAgn div :is(h3, p, label, button) {
-        margin: 5px 0;
-        max-width: 90%;        
+      #loadAgnAndAgn div :is(p, label, button) {
+        margin: 8px 0;        
+      }
+
+      #loadAgnAndAgn div :is(label){
+        align-self: center;
+      }
+
+      #loadAgnAndAgn div div{
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+      }
+      
+      #loadAgnAndAgn div div b{
+        font-weight: 500;
       }
 
       #loadAgnAndAgn span.pointerCur{

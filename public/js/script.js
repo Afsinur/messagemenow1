@@ -586,7 +586,8 @@ const app = {
         position: relative;
         display: flex;
         flex-wrap: wrap;
-        max-width: 90%;
+        width: 90%;
+        heigth: 80vh;
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;

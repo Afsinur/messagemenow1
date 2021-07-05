@@ -771,7 +771,7 @@ const app = {
         `;
 
         var dataTxt2 = `
-         <b>I promise to Allah that,</b>
+         <b>I promise to Allah for everytime I use this website that,</b>
          <ul>
            <li> I will not add any <span class="pointerCur" title="Non-mahram in Islam"><u>non-mahram</u></span>(in Islam) in this group.</li>              
          

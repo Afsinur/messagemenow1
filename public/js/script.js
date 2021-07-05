@@ -807,6 +807,10 @@ const app = {
           document.getElementById("loadAgnAndAgn").style.display = "none";
 
           clearInterval(inervaled1);
+
+          document.getElementById("acceptConBtn").setAttribute("disabled", "");
+
+          changed = true;
         }
       };
 

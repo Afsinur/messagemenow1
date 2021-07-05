@@ -733,7 +733,7 @@ const app = {
          <h3>Promise Note</h3>
 
          <div>
-            <b>I promise to Allah that,</b>
+            <b>I promise to Allah for everytime I use this website that,</b>
             <ul>
               <li>
                 I will not add any
